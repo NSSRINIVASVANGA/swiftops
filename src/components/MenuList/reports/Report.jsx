@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MaterialTable from "../../MaterialTable";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { PictureAsPdf } from "@mui/icons-material";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const Report = () => {
