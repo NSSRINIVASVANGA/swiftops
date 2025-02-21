@@ -1,6 +1,25 @@
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Box,
+  IconButton,
+} from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import { Edit, Delete } from "@mui/icons-material"; 
 
 const dummyData = [
   {
@@ -20,7 +39,7 @@ const dummyData = [
     business_address: "456 Eco Lane, Portland, OR",
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-  }
+  },
 ];
 
 const BusinessForm = () => {
@@ -28,8 +47,9 @@ const BusinessForm = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState(dummyData);
   const [open, setOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    business_id: uuidv4(),
+    business_id: "",
     business_name: "",
     business_email: "",
     business_phone: "",
@@ -52,19 +72,52 @@ const BusinessForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newBusiness = { ...formData, business_id: uuidv4() };
-    setBusinessData([...businessData, newBusiness]);
-    setFilteredData([...businessData, newBusiness]);
-    alert("Business data has been updated successfully!");
+
+    if (isEditing) {
+      const updatedBusinesses = businessData.map((business) =>
+        business.business_id === formData.business_id ? { ...formData } : business
+      );
+      setBusinessData(updatedBusinesses);
+      setFilteredData(updatedBusinesses);
+    } else {
+      const newBusiness = { ...formData, business_id: uuidv4(), created_at: new Date().toISOString() };
+      setBusinessData([...businessData, newBusiness]);
+      setFilteredData([...businessData, newBusiness]);
+    }
+
     setOpen(false);
+    setIsEditing(false);
+    resetForm();
+  };
+
+  const handleEdit = (business) => {
+    setFormData(business);
+    setIsEditing(true);
+    setOpen(true);
+  };
+
+  const handleDelete = (business_id) => {
+    const updatedBusinesses = businessData.filter((business) => business.business_id !== business_id);
+    setBusinessData(updatedBusinesses);
+    setFilteredData(updatedBusinesses);
+  };
+  const resetForm = () => {
+    setFormData({
+      business_id: "",
+      business_name: "",
+      business_email: "",
+      business_phone: "",
+      business_address: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
   };
 
   return (
     <Container>
       <Typography variant="h4" gutterBottom>Business Forms</Typography>
       <Box display="flex" justifyContent="space-between" mb={2}>
-        
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+        <Button variant="contained" color="primary" onClick={() => { setOpen(true); resetForm(); }}>
           Add New Business
         </Button>
       </Box>
@@ -76,10 +129,11 @@ const BusinessForm = () => {
             <TableRow>
               <TableCell>Business Name</TableCell>
               <TableCell>Business Email</TableCell>
-              <TableCell>Business Phone</TableCell>
+              <TableCell style={{ whiteSpace: "nowrap" }}>Business Phone</TableCell>
               <TableCell>Business Address</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -87,18 +141,25 @@ const BusinessForm = () => {
               <TableRow key={business.business_id}>
                 <TableCell>{business.business_name}</TableCell>
                 <TableCell>{business.business_email}</TableCell>
-                <TableCell>{business.business_phone}</TableCell>
+                <TableCell style={{ whiteSpace: "nowrap" }}>{business.business_phone}</TableCell>
                 <TableCell>{business.business_address}</TableCell>
                 <TableCell>{business.created_at}</TableCell>
                 <TableCell>{business.updated_at}</TableCell>
+                <TableCell>
+                  <IconButton color="primary" onClick={() => handleEdit(business)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton color="error" onClick={() => handleDelete(business.business_id)}>
+                    <Delete />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle >Business Form</DialogTitle>
+        <DialogTitle>{isEditing ? "Edit Business" : "Add Business"}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField fullWidth margin="normal" label="Business Name" name="business_name" value={formData.business_name} onChange={handleChange} required />
@@ -106,8 +167,8 @@ const BusinessForm = () => {
             <TextField fullWidth margin="normal" label="Business Phone" name="business_phone" value={formData.business_phone} onChange={handleChange} required />
             <TextField fullWidth margin="normal" label="Business Address" name="business_address" value={formData.business_address} onChange={handleChange} required />
             <DialogActions>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">Submit</Button>
+              <Button onClick={() => { setOpen(false); setIsEditing(false); }}>Cancel</Button>
+              <Button type="submit" variant="contained" color="primary">{isEditing ? "Update" : "Submit"}</Button>
             </DialogActions>
           </form>
         </DialogContent>
