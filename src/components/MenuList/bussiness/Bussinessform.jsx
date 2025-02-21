@@ -1,6 +1,13 @@
+
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Box } from "@mui/material";
+import { 
+  Container, Typography, TextField, Button, Table, TableBody, TableCell, 
+  TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, 
+  DialogContent, DialogActions, Box, IconButton 
+} from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const dummyData = [
   {
@@ -28,6 +35,7 @@ const BusinessForm = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState(dummyData);
   const [open, setOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     business_id: uuidv4(),
     business_name: "",
@@ -52,19 +60,35 @@ const BusinessForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newBusiness = { ...formData, business_id: uuidv4() };
-    setBusinessData([...businessData, newBusiness]);
-    setFilteredData([...businessData, newBusiness]);
-    alert("Business data has been updated successfully!");
+    if (editMode) {
+      setBusinessData(businessData.map(b => (b.business_id === formData.business_id ? formData : b)));
+      setFilteredData(filteredData.map(b => (b.business_id === formData.business_id ? formData : b)));
+    } else {
+      const newBusiness = { ...formData, business_id: uuidv4() };
+      setBusinessData([...businessData, newBusiness]);
+      setFilteredData([...businessData, newBusiness]);
+    }
     setOpen(false);
+    setEditMode(false);
+  };
+
+  const handleEdit = (business) => {
+    setFormData(business);
+    setEditMode(true);
+    setOpen(true);
+  };
+
+  const handleDelete = (id) => {
+    const updatedData = businessData.filter(b => b.business_id !== id);
+    setBusinessData(updatedData);
+    setFilteredData(updatedData);
   };
 
   return (
     <Container>
       <Typography variant="h4" gutterBottom>Business Forms</Typography>
       <Box display="flex" justifyContent="space-between" mb={2}>
-        
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+        <Button variant="contained" color="primary" onClick={() => { setOpen(true); setEditMode(false); }}>
           Add New Business
         </Button>
       </Box>
@@ -80,6 +104,7 @@ const BusinessForm = () => {
               <TableCell>Business Address</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Updated At</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -91,6 +116,14 @@ const BusinessForm = () => {
                 <TableCell>{business.business_address}</TableCell>
                 <TableCell>{business.created_at}</TableCell>
                 <TableCell>{business.updated_at}</TableCell>
+                <TableCell>
+                  <IconButton color="primary" onClick={() => handleEdit(business)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="secondary" onClick={() => handleDelete(business.business_id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -98,7 +131,7 @@ const BusinessForm = () => {
       </TableContainer>
 
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle >Business Form</DialogTitle>
+        <DialogTitle>{editMode ? "Edit Business" : "Add Business"}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField fullWidth margin="normal" label="Business Name" name="business_name" value={formData.business_name} onChange={handleChange} required />
@@ -107,7 +140,7 @@ const BusinessForm = () => {
             <TextField fullWidth margin="normal" label="Business Address" name="business_address" value={formData.business_address} onChange={handleChange} required />
             <DialogActions>
               <Button onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">Submit</Button>
+              <Button type="submit" variant="contained" color="primary">{editMode ? "Update" : "Submit"}</Button>
             </DialogActions>
           </form>
         </DialogContent>
