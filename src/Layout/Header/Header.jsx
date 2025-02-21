@@ -39,7 +39,7 @@ const Header = ({ sidebarOpen, setSidebarOpen, onLogout }) => {
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTablet = useMediaQuery("(max-width:960px)");
-  const isLaptop = useMediaQuery("(min-width: 1024px)");
+
   
   const notifications = [
     { id: 1, text: "New task assigned: Dashboard Revamp" },
@@ -72,7 +72,7 @@ const Header = ({ sidebarOpen, setSidebarOpen, onLogout }) => {
         position="fixed"
         sx={{
           width: sidebarOpen ? (isTablet ? "100%" : "calc(100% - 200px)") : "95%",
-          transition: "width 0.8s",
+          transition: "width 0.3s",
           backgroundColor: darkMode ? "#333" : "white",
           color: darkMode ? "white" : "black",
         }}
@@ -88,7 +88,7 @@ const Header = ({ sidebarOpen, setSidebarOpen, onLogout }) => {
 
           {/* Logo */}
           <Typography variant={isMobile ? "h6" : "h5"} sx={{ flexGrow: 1 }}>
-            BUSITRON
+            {sidebarOpen ? "" : "SWIFTOPS"}
           </Typography>
 
           {/* Search Bar */}
@@ -197,7 +197,8 @@ const Header = ({ sidebarOpen, setSidebarOpen, onLogout }) => {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuItem onClick={() => setAnchorEl(null)}>Tarun Ponnada</MenuItem>
-        <MenuItem onClick={() => setAnchorEl(null)}>Sai Ponnada</MenuItem>
+        <MenuItem onClick={() => setAnchorEl(null)}>Vamsi M</MenuItem>
+        <MenuItem onClick={() => setAnchorEl(null)}>Sreenu A</MenuItem>
         <Divider />
         <MenuItem onClick={onLogout} sx={{ color: "red" }}>
           Logout

@@ -1,141 +1,97 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Box,
-  IconButton,
-  MenuItem,
-} from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
-import { Edit, Delete } from "@mui/icons-material";
+import MaterialTable from "../../MaterialTable";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Select, MenuItem } from "@mui/material";
 
 const CampaignForm = () => {
-  const [formData, setFormData] = useState({
-    campaign_name: "",
-    campaign_type: "Email",
-    status: "Draft",
-  });
-  const [submittedData, setSubmittedData] = useState([]);
-  const [configError, setConfigError] = useState("");
-  const [open, setOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [data, setData] = useState([
+    { campaign_id: 1, campaign_name: "Campaign A", campaign_type: "Email", status: "Active" },
+    { campaign_id: 2, campaign_name: "Campaign B", campaign_type: "SMS", status: "Completed" },
+    { campaign_id: 3, campaign_name: "Campaign C", campaign_type: "Push", status: "Draft" },
+    { campaign_id: 4, campaign_name: "Campaign D", campaign_type: "Email", status: "Draft" },
+    { campaign_id: 5, campaign_name: "Campaign E", campaign_type: "Push", status: "Draft" }
+  ]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const [open, setOpen] = useState(false);
+  const [newCampaign, setNewCampaign] = useState({
+    campaign_name: "",
+    campaign_type: "",
+    status: ""
+  });
+
+  const columns = [
+    { label: "ID", field: "campaign_id" },
+    { label: "Campaign Name", field: "campaign_name" },
+    { label: "Campaign Type", field: "campaign_type" },
+    { label: "Status", field: "status" }
+  ];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCampaign({ ...newCampaign, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      setConfigError("");
-      if (isEditing) {
-        setSubmittedData((prevData) =>
-          prevData.map((item) => (item.campaign_id === formData.campaign_id ? formData : item))
-        );
-      } else {
-        setSubmittedData([...submittedData, { ...formData, campaign_id: uuidv4() }]);
-      }
-      setOpen(false);
-      setIsEditing(false);
-      setFormData({
-        campaign_name: "",
-        campaign_type: "Email",
-        status: "Draft",
-      });
-    } catch (error) {
-      setConfigError("Invalid format");
-    }
-  };
-
-  const handleDelete = (id) => {
-    setSubmittedData(submittedData.filter((item) => item.campaign_id !== id));
-  };
-
-  const handleEdit = (id) => {
-    const selectedCampaign = submittedData.find((item) => item.campaign_id === id);
-    if (selectedCampaign) {
-      setFormData({
-        campaign_name: selectedCampaign.campaign_name,
-        campaign_type: selectedCampaign.campaign_type,
-        status: selectedCampaign.status,
-      });
-      setIsEditing(true);
-      setOpen(true);
-    }
+    const newId = data.length ? data[data.length - 1].campaign_id + 1 : 1;
+    const updatedData = [...data, { campaign_id: newId, ...newCampaign }];
+    setData(updatedData);
+    setNewCampaign({ campaign_name: "", campaign_type: "", status: "" });
+    setOpen(false); // Close modal after submission
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 12 }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => { setOpen(true); setIsEditing(false); }}
-        sx={{ mb: 2 }}
-      >
-        Create Campaign
-      </Button>
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{isEditing ? "Edit Campaign" : "Create Campaign"}</DialogTitle>
+    <div>
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Create Campaign</Button>
+      
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add Campaign</DialogTitle>
         <DialogContent>
-          <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 , mt: 2}}>
-            <TextField
-              label="Campaign Name"
-              name="campaign_name"
-              fullWidth
-              value={formData.campaign_name}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              label="Campaign Type"
-              name="campaign_type"
-              fullWidth
-              value={formData.campaign_type}
-              onChange={handleChange}
-              required
-            />
-            <TextField select label="Status" name="status" fullWidth value={formData.status} onChange={handleChange}>
-              {["Draft", "Active", "Completed"].map((status) => (
-                <MenuItem key={status} value={status}>{status}</MenuItem>
-              ))}
-            </TextField>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">
-                {isEditing ? "Update" : "Submit"}
-              </Button>
-            </DialogActions>
-          </Box>
+          <TextField
+            fullWidth
+            margin="dense"
+            label="Campaign Name"
+            name="campaign_name"
+            value={newCampaign.campaign_name}
+            onChange={handleInputChange}
+            required
+          />
+          <Select
+            fullWidth
+            margin="dense"
+            name="campaign_type"
+            value={newCampaign.campaign_type}
+            onChange={handleInputChange}
+            displayEmpty
+            required
+          >
+            <MenuItem value="">Select Type</MenuItem>
+            <MenuItem value="Email">Email</MenuItem>
+            <MenuItem value="SMS">SMS</MenuItem>
+            <MenuItem value="Push">Push</MenuItem>
+          </Select>
+          <Select
+            fullWidth
+            margin="dense"
+            name="status"
+            value={newCampaign.status}
+            onChange={handleInputChange}
+            displayEmpty
+            required
+          >
+            <MenuItem value="">Select Status</MenuItem>
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="Draft">Draft</MenuItem>
+          </Select>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="secondary">Cancel</Button>
+          <Button onClick={handleSubmit} color="primary" variant="contained">Submit</Button>
+        </DialogActions>
       </Dialog>
-
-      {submittedData.length > 0 && (
-        <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
-          <Typography variant="h6" sx={{ textAlign: "center" }}>Campaigns</Typography>
-          {submittedData.map((data) => (
-            <Paper key={data.campaign_id} elevation={2} sx={{ p: 2, mt: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Box>
-                <Typography variant="body1"><strong>{data.campaign_name}</strong> ({data.status})</Typography>
-              </Box>
-              <Box>
-                <IconButton onClick={() => handleEdit(data.campaign_id)} color="primary"><Edit /></IconButton>
-                <IconButton onClick={() => handleDelete(data.campaign_id)} color="error"><Delete /></IconButton>
-              </Box>
-            </Paper>
-          ))}
-        </Paper>
-      )}
-    </Container>
+      
+      <MaterialTable columns={columns} initialData={data} />
+    </div>
   );
 };
 
