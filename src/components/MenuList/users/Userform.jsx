@@ -1,36 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import MaterialTable from "../../MaterialTable";
 import {
   Grid,
   TextField,
   Checkbox,
   FormControlLabel,
   Button,
-  Typography,
-  Paper,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+} from "@mui/material";
 
-function FormGrid() {
+function Clientform() {
   // State for form inputs
   const [formData, setFormData] = useState({
-    email: '',
-    phonenumber: '',
-    address: '',
-    state: '',
-    city: '',
-    zip: '',
+    name: "",
+    email: "",
+    phonenumber: "",
+    address: "",
     checked: true,
   });
 
@@ -48,7 +36,7 @@ function FormGrid() {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -63,58 +51,64 @@ function FormGrid() {
       setEditIndex(null);
     } else {
       // Add new entry
-      setSubmittedData([...submittedData, formData]);
+      setSubmittedData([...submittedData, { ...formData }]);
     }
+
     // Reset form and close the popup
-    setFormData({
-      email: '',
-      phonenumber: '',
-      address: '',
-      state: '',
-      city: '',
-      zip: '',
-      checked: true,
-    });
-    setOpen(false);
+    resetForm();
   };
 
-  // Handle edit action
-  const handleEdit = (index) => {
-    setFormData(submittedData[index]);
-    setEditIndex(index);
-    setOpen(true); // Open the popup for editing
-  };
-
-  // Handle delete action
-  const handleDelete = (index) => {
-    const updatedData = submittedData.filter((_, i) => i !== index);
-    setSubmittedData(updatedData);
-  };
-
-  // Open the form popup
+  // Open the form popup for new entry
   const handleClickOpen = () => {
+    resetForm();
+    setOpen(true);
+  };
+
+  // Open the form popup for editing existing entry
+  const handleEdit = (index) => {
+    setEditIndex(index);
+    setFormData(submittedData[index]); // Pre-fill form with selected entry
     setOpen(true);
   };
 
   // Close the form popup
   const handleClose = () => {
-    setOpen(false);
-    setEditIndex(null); // Reset edit mode
-    setFormData({
-      email: '',
-      phonenumber: '',
-      address: '',
-      state: '',
-      city: '',
-      zip: '',
-      checked: true,
-    });
+    resetForm();
   };
 
+  // Reset form fields
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      phonenumber: "",
+      address: "",
+      checked: true,
+    });
+    setEditIndex(null);
+    setOpen(false);
+  };
+
+  const columns = [
+    { label: "Name", field: "name" },
+    { label: "Email", field: "email" },
+    { label: "Phone Number", field: "phonenumber" },
+    { label: "Address", field: "address" },
+    {
+      label: "Actions",
+      field: "actions",
+      render: (rowData, index) => (
+        <Button variant="contained" color="primary" onClick={() => handleEdit(index)}>
+          Edit
+        </Button>
+      ),
+    },
+  ];
+
   return (
-    <div style={{ padding: '24px' }}>
+    <div style={{ paddingTop: "24px", width: "100%" }}>
       {/* Add New Button */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px', marginTop: '20px' }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px", marginTop: "20px" }}>
         <Button variant="contained" color="primary" onClick={handleClickOpen}>
           Add New
         </Button>
@@ -122,11 +116,21 @@ function FormGrid() {
 
       {/* Form Popup */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editIndex !== null ? 'Edit Entry' : 'Add New Entry'}</DialogTitle>
+        <DialogTitle>{editIndex !== null ? "Edit Entry" : "Add New Entry"}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} sx={{ marginTop: '8px' }}>
-              {/* Email and Phone Number Row */}
+            <Grid container spacing={2} sx={{ marginTop: "8px" }}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  variant="outlined"
+                  sx={{ marginBottom: "16px" }}
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
@@ -135,7 +139,7 @@ function FormGrid() {
                   value={formData.email}
                   onChange={handleInputChange}
                   variant="outlined"
-                  sx={{ marginBottom: '16px' }}
+                  sx={{ marginBottom: "16px" }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -146,11 +150,9 @@ function FormGrid() {
                   value={formData.phonenumber}
                   onChange={handleInputChange}
                   variant="outlined"
-                  sx={{ marginBottom: '16px' }}
+                  sx={{ marginBottom: "16px" }}
                 />
               </Grid>
-
-              {/* Address Row */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -159,46 +161,9 @@ function FormGrid() {
                   value={formData.address}
                   onChange={handleInputChange}
                   variant="outlined"
-                  sx={{ marginBottom: '16px' }}
+                  sx={{ marginBottom: "16px" }}
                 />
               </Grid>
-
-              {/* State, City, Zip Row */}
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="State"
-                  name="state"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  variant="outlined"
-                  sx={{ marginBottom: '16px' }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="City"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  variant="outlined"
-                  sx={{ marginBottom: '16px' }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Zip"
-                  name="zip"
-                  value={formData.zip}
-                  onChange={handleInputChange}
-                  variant="outlined"
-                  sx={{ marginBottom: '16px' }}
-                />
-              </Grid>
-
-              {/* Checkbox */}
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -206,11 +171,11 @@ function FormGrid() {
                       name="checked"
                       checked={formData.checked}
                       onChange={handleInputChange}
-                      sx={{ color: '#1976d2' }}
+                      sx={{ color: "#1976d2" }}
                     />
                   }
                   label="Check me out"
-                  sx={{ color: '#333' }}
+                  sx={{ color: "#333" }}
                 />
               </Grid>
             </Grid>
@@ -221,51 +186,15 @@ function FormGrid() {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            {editIndex !== null ? 'Update' : 'Submit'}
+            {editIndex !== null ? "Update" : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Display Submitted Data in Table */}
-      <TableContainer component={Paper} sx={{ marginTop: '24px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><strong>Email</strong></TableCell>
-              <TableCell><strong>Phone Number</strong></TableCell>
-              <TableCell><strong>Address</strong></TableCell>
-              <TableCell><strong>State</strong></TableCell>
-              <TableCell><strong>City</strong></TableCell>
-              <TableCell><strong>Zip</strong></TableCell>
-              <TableCell><strong>Checked</strong></TableCell>
-              <TableCell><strong>Actions</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {submittedData.map((data, index) => (
-              <TableRow key={index}>
-                <TableCell>{data.email}</TableCell>
-                <TableCell>{data.phonenumber}</TableCell>
-                <TableCell>{data.address}</TableCell>
-                <TableCell>{data.state}</TableCell>
-                <TableCell>{data.city}</TableCell>
-                <TableCell>{data.zip}</TableCell>
-                <TableCell>{data.checked ? 'Yes' : 'No'}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleEdit(index)} color="primary">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(index)} color="error">
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Table displaying data */}
+      <MaterialTable columns={columns} key={submittedData.length} initialData={submittedData} />
     </div>
   );
 }
 
-export default FormGrid;
+export default Clientform;
