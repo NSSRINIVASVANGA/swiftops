@@ -43,9 +43,7 @@ const dummyData = [
 ];
 
 const BusinessForm = () => {
-  const [businessData, setBusinessData] = useState(dummyData);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(dummyData);
+  // State for dialog open/close
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -58,17 +56,46 @@ const BusinessForm = () => {
     updated_at: new Date().toISOString(),
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value, updated_at: new Date().toISOString() });
+  // State for client data (this will store the businesses)
+  const [clientFormData, setClientFormData] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 3, name: "Alice Brown", email: "alice@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 4, name: "Bob White", email: "bob@example.com", phone: "9897987983", address: "Hyd" }
+  ]);
+
+  // Table columns definition
+  const columns = [
+    { label: "ID", field: "id" },
+    { label: "Name", field: "name" },
+    { label: "Email", field: "email" },
+    { label: "Phone", field: "phone" },
+    { label: "Address", field: "address" }
+  ];
+
+  // Handle update action
+  const handleUpdate = (user) => {
+    alert(`Update user: ${user.name}`);
   };
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    const filtered = businessData.filter((business) =>
-      business.business_name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredData(filtered);
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    // Add new business to clientFormData
+    const newBusiness = {
+      id: clientFormData.length + 1, // auto-increment id
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address
+    };
+    
+    // Update the clientFormData with new business
+    setClientFormData((prevData) => [...prevData, newBusiness]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -114,7 +141,7 @@ const BusinessForm = () => {
   };
 
   return (
-    <Container>
+    <div>
       <Typography variant="h4" gutterBottom>Business Forms</Typography>
       <Box display="flex" justifyContent="space-between" mb={2}>
         <Button variant="contained" color="primary" onClick={() => { setOpen(true); resetForm(); }}>
@@ -172,8 +199,12 @@ const BusinessForm = () => {
             </DialogActions>
           </form>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="secondary">Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">Submit</Button>
+        </DialogActions>
       </Dialog>
-    </Container>
+    </div>
   );
 };
 
