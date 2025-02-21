@@ -1,25 +1,14 @@
+
 import React, { useState } from "react";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Box,
-  IconButton,
+import { 
+  Container, Typography, TextField, Button, Table, TableBody, TableCell, 
+  TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, 
+  DialogContent, DialogActions, Box, IconButton 
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import { Edit, Delete } from "@mui/icons-material"; 
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 const dummyData = [
   {
@@ -45,7 +34,7 @@ const dummyData = [
 const BusinessForm = () => {
   // State for dialog open/close
   const [open, setOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     business_id: "",
     business_name: "",
@@ -99,52 +88,38 @@ const BusinessForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (isEditing) {
-      const updatedBusinesses = businessData.map((business) =>
-        business.business_id === formData.business_id ? { ...formData } : business
-      );
-      setBusinessData(updatedBusinesses);
-      setFilteredData(updatedBusinesses);
+    if (editMode) {
+      setBusinessData(businessData.map(b => (b.business_id === formData.business_id ? formData : b)));
+      setFilteredData(filteredData.map(b => (b.business_id === formData.business_id ? formData : b)));
     } else {
-      const newBusiness = { ...formData, business_id: uuidv4(), created_at: new Date().toISOString() };
+      const newBusiness = { ...formData, business_id: uuidv4() };
       setBusinessData([...businessData, newBusiness]);
       setFilteredData([...businessData, newBusiness]);
     }
-
     setOpen(false);
-    setIsEditing(false);
-    resetForm();
+    setEditMode(false);
   };
 
   const handleEdit = (business) => {
     setFormData(business);
-    setIsEditing(true);
+    setEditMode(true);
     setOpen(true);
   };
 
-  const handleDelete = (business_id) => {
-    const updatedBusinesses = businessData.filter((business) => business.business_id !== business_id);
-    setBusinessData(updatedBusinesses);
-    setFilteredData(updatedBusinesses);
-  };
-  const resetForm = () => {
-    setFormData({
-      business_id: "",
-      business_name: "",
-      business_email: "",
-      business_phone: "",
-      business_address: "",
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+  const handleDelete = (id) => {
+    const updatedData = businessData.filter(b => b.business_id !== id);
+    setBusinessData(updatedData);
+    setFilteredData(updatedData);
+
   };
 
   return (
     <div>
       <Typography variant="h4" gutterBottom>Business Forms</Typography>
       <Box display="flex" justifyContent="space-between" mb={2}>
-        <Button variant="contained" color="primary" onClick={() => { setOpen(true); resetForm(); }}>
+
+        <Button variant="contained" color="primary" onClick={() => { setOpen(true); setEditMode(false); }}>
+
           Add New Business
         </Button>
       </Box>
@@ -174,10 +149,11 @@ const BusinessForm = () => {
                 <TableCell>{business.updated_at}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => handleEdit(business)}>
-                    <Edit />
+
+                    <EditIcon />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleDelete(business.business_id)}>
-                    <Delete />
+                  <IconButton color="secondary" onClick={() => handleDelete(business.business_id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -186,7 +162,9 @@ const BusinessForm = () => {
         </Table>
       </TableContainer>
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>{isEditing ? "Edit Business" : "Add Business"}</DialogTitle>
+
+        <DialogTitle>{editMode ? "Edit Business" : "Add Business"}</DialogTitle>
+
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField fullWidth margin="normal" label="Business Name" name="business_name" value={formData.business_name} onChange={handleChange} required />
@@ -194,8 +172,10 @@ const BusinessForm = () => {
             <TextField fullWidth margin="normal" label="Business Phone" name="business_phone" value={formData.business_phone} onChange={handleChange} required />
             <TextField fullWidth margin="normal" label="Business Address" name="business_address" value={formData.business_address} onChange={handleChange} required />
             <DialogActions>
-              <Button onClick={() => { setOpen(false); setIsEditing(false); }}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">{isEditing ? "Update" : "Submit"}</Button>
+
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button type="submit" variant="contained" color="primary">{editMode ? "Update" : "Submit"}</Button>
+
             </DialogActions>
           </form>
         </DialogContent>
