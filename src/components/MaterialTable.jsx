@@ -10,11 +10,11 @@ import {
   TableSortLabel,
   TablePagination,
   TextField,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Visibility } from "@mui/icons-material";
 
-const MaterialTable = ({ columns, initialData, onUpdate }) => {
+const MaterialTable = ({ columns, initialData, onUpdate, onView }) => {
   const [search, setSearch] = useState("");
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
@@ -38,6 +38,11 @@ const MaterialTable = ({ columns, initialData, onUpdate }) => {
   // Handle Update
   const handleUpdate = (row) => {
     onUpdate(row);
+  };
+
+  // Handle View
+  const handleView = (row) => {
+    onView(row);
   };
 
   // Filter & Sort Data
@@ -108,6 +113,9 @@ const MaterialTable = ({ columns, initialData, onUpdate }) => {
                   <TableCell>
                     <IconButton color="primary" onClick={() => handleUpdate(row)}>
                       <Edit />
+                    </IconButton>
+                    <IconButton color="success" onClick={() => handleView(row)}>
+                      <Visibility />
                     </IconButton>
                     <IconButton color="error" onClick={() => handleDelete(row.id)}>
                       <Delete />
