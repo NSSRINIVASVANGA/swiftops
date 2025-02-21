@@ -1,118 +1,116 @@
-import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Box } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
-
-const dummyData = [
-  {
-    business_id: uuidv4(),
-    business_name: "Tech Solutions Inc.",
-    business_email: "contact@techsolutions.com",
-    business_phone: "+1 555-1234",
-    business_address: "123 Tech Street, Silicon Valley, CA",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    business_id: uuidv4(),
-    business_name: "Green Earth Services",
-    business_email: "info@greenearth.com",
-    business_phone: "+1 555-5678",
-    business_address: "456 Eco Lane, Portland, OR",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  }
-];
+import React, { useState } from 'react';
+import {
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Box
+} from '@mui/material';
+import MaterialTable from "../../MaterialTable";
 
 const BusinessForm = () => {
-  const [businessData, setBusinessData] = useState(dummyData);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(dummyData);
+  // State for dialog open/close
   const [open, setOpen] = useState(false);
+
+  // State for form data
   const [formData, setFormData] = useState({
-    business_id: uuidv4(),
-    business_name: "",
-    business_email: "",
-    business_phone: "",
-    business_address: "",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    name: "",
+    email: "",
+    phone: "",
+    address: ""
   });
 
+  // State for client data (this will store the businesses)
+  const [clientFormData, setClientFormData] = useState([
+    { id: 1, name: "John Doe", email: "john@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 3, name: "Alice Brown", email: "alice@example.com", phone: "9897987983", address: "Hyd" },
+    { id: 4, name: "Bob White", email: "bob@example.com", phone: "9897987983", address: "Hyd" }
+  ]);
+
+  // Table columns definition
+  const columns = [
+    { label: "ID", field: "id" },
+    { label: "Name", field: "name" },
+    { label: "Email", field: "email" },
+    { label: "Phone", field: "phone" },
+    { label: "Address", field: "address" }
+  ];
+
+  // Handle update action
+  const handleUpdate = (user) => {
+    alert(`Update user: ${user.name}`);
+  };
+
+  // Handle input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value, updated_at: new Date().toISOString() });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    const filtered = businessData.filter((business) =>
-      business.business_name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredData(filtered);
-  };
+  // Handle form submission
+  const handleSubmit = () => {
+    // Add new business to clientFormData
+    const newBusiness = {
+      id: clientFormData.length + 1, // auto-increment id
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address
+    };
+    
+    // Update the clientFormData with new business
+    setClientFormData((prevData) => [...prevData, newBusiness]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newBusiness = { ...formData, business_id: uuidv4() };
-    setBusinessData([...businessData, newBusiness]);
-    setFilteredData([...businessData, newBusiness]);
-    alert("Business data has been updated successfully!");
+    // Reset the form data
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      address: ""
+    });
+
+    // Close the dialog
     setOpen(false);
   };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>Business Forms</Typography>
-      <Box display="flex" justifyContent="space-between" mb={2}>
-        
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-          Add New Business
-        </Button>
-      </Box>
-      
-      <TextField fullWidth margin="normal" label="Search Business" value={searchQuery} onChange={handleSearch} />
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Business Name</TableCell>
-              <TableCell>Business Email</TableCell>
-              <TableCell>Business Phone</TableCell>
-              <TableCell>Business Address</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Updated At</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.map((business) => (
-              <TableRow key={business.business_id}>
-                <TableCell>{business.business_name}</TableCell>
-                <TableCell>{business.business_email}</TableCell>
-                <TableCell>{business.business_phone}</TableCell>
-                <TableCell>{business.business_address}</TableCell>
-                <TableCell>{business.created_at}</TableCell>
-                <TableCell>{business.updated_at}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <div>
+      {/* Heading */}
+      <Typography variant='h4'>Business Form</Typography>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle >Business Form</DialogTitle>
+      {/* Add Business Button */}
+      <Button 
+        variant="contained" 
+        color="primary" 
+        style={{ margin: '10px 0' }} 
+        onClick={() => setOpen(true)}
+      >
+        Add Business
+      </Button>
+
+      {/* Material Table */}
+      <MaterialTable columns={columns} initialData={clientFormData} onUpdate={handleUpdate} />
+
+      {/* Add Business Form Dialog */}
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Add Business</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit}>
-            <TextField fullWidth margin="normal" label="Business Name" name="business_name" value={formData.business_name} onChange={handleChange} required />
-            <TextField fullWidth margin="normal" label="Business Email" name="business_email" type="email" value={formData.business_email} onChange={handleChange} required />
-            <TextField fullWidth margin="normal" label="Business Phone" name="business_phone" value={formData.business_phone} onChange={handleChange} required />
-            <TextField fullWidth margin="normal" label="Business Address" name="business_address" value={formData.business_address} onChange={handleChange} required />
-            <DialogActions>
-              <Button onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">Submit</Button>
-            </DialogActions>
-          </form>
+          <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+            <TextField label="Business Name" name="name" value={formData.name} onChange={handleChange} required />
+            <TextField label="Business Email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+            <TextField label="Business Phone" name="phone" value={formData.phone} onChange={handleChange} required />
+            <TextField label="Business Address" name="address" value={formData.address} onChange={handleChange} required />
+          </Box>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="secondary">Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">Submit</Button>
+        </DialogActions>
       </Dialog>
-    </Container>
+    </div>
   );
 };
 
