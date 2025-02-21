@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import Login from "./Login/Loginform";
+import ForgetPassword from './Login/ForgetPassword'
 import Dashboard from "./dashboards/Dashboard";
 import BusinessForm from "./MenuList/bussiness/Bussinessform";
 import User from "./MenuList/users/Userform";
@@ -12,6 +13,7 @@ import Appointment from "./MenuList/appointment/Appointments";
 import Marketing from "./MenuList/marketingCampaighn/Campaighnform";
 import Subscription from "./MenuList/subscription/Subscribe";
 import Report from "./MenuList/reports/Report";
+import ConfirmPassword from "./Login/ConfirmPassword";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +21,8 @@ const AppRoutes = () => {
       <Routes>
         {/* Default Route (Login) */}
         <Route path="/" element={<Login />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/conform-password" element={<ConfirmPassword />} />
 
         {/* Protected Layout with Nested Routes */}
         <Route path="/dashboard" element={<Layout />}>
