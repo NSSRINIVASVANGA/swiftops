@@ -1,56 +1,82 @@
-import React from "react";
-import { Container, Grid, Card, CardContent, Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import MaterialTable from "../../MaterialTable";
+import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 
-const plans = [
-  {
-    title: "Basic",
-    price: "$9.99/month",
-    features: ["Business ID", "Plan valid for 30days", "follow the subscription for membership plan"],
-  },
-  {
-    title: "Standard",
-    price: "$19.99/month",
-    features: ["Business ID", "Plan valid for 30days", "follow the subscription for membership plan"],
-  },
-  {
-    title: "Premium",
-    price: "$29.99/month",
-    features: ["Business ID", "Plan valid for 30days", "follow the subscription for membership plan"],
-  },
-];
+const SubscribersTable = () => {
+  const [subscriptions, setSubscriptions] = useState([
+    {
+      id: 1,
+      name: "Ford",
+      monthlyPlanPrice: "9.99",
+      annualPlanPrice: "99.99",
+      loginDevice: "Mobile & Desktop",
+      businessProvider: "Amazon",
+      limitations: "Limited to 1 device",
+    },
+    {
+      id: 2,
+      name: "Henry",
+      monthlyPlanPrice: "19.99",
+      annualPlanPrice: "199.99",
+      loginDevice: "Desktop Only",
+      businessProvider: "Netflix",
+      limitations: "2 screens at a time",
+    },
+  ]);
 
-const SubscriptionPlans = () => {
+  const [openForm, setOpenForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    monthlyPlanPrice: "",
+    annualPlanPrice: "",
+    businessProvider: "",
+    limitations: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    setSubscriptions([...subscriptions, { id: subscriptions.length + 1, ...formData }]);
+    setOpenForm(false);
+    setFormData({ name: "", monthlyPlanPrice: "", annualPlanPrice: "", businessProvider: "", limitations: "" });
+  };
+
+  const columns = [
+    { field: "name", headerName: "Name", width: 100 },
+    { field: "monthlyPlanPrice", headerName: "Monthly Plan Price ($)", width: 190 },
+    { field: "annualPlanPrice", headerName: "Annual Plan Price ($)", width: 170 },
+    { field: "loginDevice", headerName: "Login Device", width: 170 },
+    { field: "businessProvider", headerName: "Business Provider", width: 170 },
+    { field: "limitations", headerName: "Limitations", width: 170 },
+  ];
+
   return (
-    <Container sx={{ mt: 5, marginRight:'100px',display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', minHeight: '100vh' }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Choose Your Plan
-      </Typography>
-      <Grid container spacing={4} justifyContent="center">
-        {plans.map((plan, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card sx={{ textAlign: "center", p: 3 }}>
-              <CardContent>
-                <Typography variant="h5" gutterBottom>
-                  {plan.title}
-                </Typography>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  {plan.price}
-                </Typography>
-                {plan.features.map((feature, i) => (
-                  <Typography key={i} variant="body2" color="textSecondary">
-                    {feature}
-                  </Typography>
-                ))}
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                  Subscribe
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", marginBottom: 2 }}>
+        <Button variant="contained" color="primary" onClick={() => setOpenForm(true)}>
+          New Subscription
+        </Button>
+      </Box>
+      <MaterialTable columns={columns} initialData={subscriptions} options={{ search: false }} />
+
+      <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth maxWidth="sm">
+        <DialogTitle>New Subscription</DialogTitle>
+        <DialogContent>
+          <TextField fullWidth margin="dense" label="Name" name="name" value={formData.name} onChange={handleInputChange} />
+          <TextField fullWidth margin="dense" label="Monthly Plan Price" name="monthlyPlanPrice" value={formData.monthlyPlanPrice} onChange={handleInputChange} />
+          <TextField fullWidth margin="dense" label="Annual Plan Price" name="annualPlanPrice" value={formData.annualPlanPrice} onChange={handleInputChange} />
+          <TextField fullWidth margin="dense" label="Business Provider" name="businessProvider" value={formData.businessProvider} onChange={handleInputChange} />
+          <TextField fullWidth margin="dense" label="Limitations" name="limitations" value={formData.limitations} onChange={handleInputChange} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenForm(false)} color="secondary">Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">Submit</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 
-export default SubscriptionPlans;
+export default SubscribersTable; 
