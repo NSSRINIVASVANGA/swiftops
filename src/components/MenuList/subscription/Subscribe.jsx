@@ -44,12 +44,12 @@ const SubscribersTable = () => {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", width: 100 },
-    { field: "monthlyPlanPrice", headerName: "Monthly Plan Price ($)", width: 190 },
-    { field: "annualPlanPrice", headerName: "Annual Plan Price ($)", width: 170 },
-    { field: "loginDevice", headerName: "Login Device", width: 170 },
-    { field: "businessProvider", headerName: "Business Provider", width: 170 },
-    { field: "limitations", headerName: "Limitations", width: 170 },
+    { field: "name", label: "Name"},
+    { field: "monthlyPlanPrice", label: "Monthly Plan Price ($)"},
+    { field: "annualPlanPrice", label: "Annual Plan Price ($)"},
+    { field: "loginDevice", label: "Login Device"},
+    { field: "businessProvider", label: "Business Provider"},
+    { field: "limitations", label: "Limitations"},
   ];
 
   return (

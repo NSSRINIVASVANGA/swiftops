@@ -10,10 +10,10 @@ const BusinessForm = () => {
 
   const ClientFormData = [
     { id: 1, BusinessName: "John Doe", BusinessMail: "john@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
-    { id: 1, BusinessName: "Sreekanth", BusinessMail: "Sreekanth@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
-    { id: 1, BusinessName: "Sreenu", BusinessMail: "Sreenu@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
-    { id: 1, BusinessName: "Anjali", BusinessMail: "Anjali@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
-    { id: 1, BusinessName: "Vamsi", BusinessMail: "Vamsi@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
+    { id: 2, BusinessName: "Sreekanth", BusinessMail: "Sreekanth@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
+    { id: 3, BusinessName: "Sreenu", BusinessMail: "Sreenu@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
+    { id: 4, BusinessName: "Anjali", BusinessMail: "Anjali@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
+    { id: 5, BusinessName: "Vamsi", BusinessMail: "Vamsi@example.com" , BusinessPhone : "7093188460", BusinessAddress:"Hyderabad"},
   ];
 
   return (
