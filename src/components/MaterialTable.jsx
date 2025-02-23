@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -21,9 +21,10 @@ const MaterialTable = ({ columns = [], initialData = [], onUpdate, onDelete }) =
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState(initialData);
-
+console.log(data)
   // Handle Sorting
   const handleSort = (column) => {
+    console.log(columns)
     const isAsc = orderBy === column && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(column);
@@ -70,6 +71,11 @@ const MaterialTable = ({ columns = [], initialData = [], onUpdate, onDelete }) =
     setPage(0);
   };
 
+  useEffect(() => {
+    setData(initialData)
+  },[initialData])
+
+  
   return (
     <Paper sx={{ padding: 2 }}>
       {/* Search Input */}
