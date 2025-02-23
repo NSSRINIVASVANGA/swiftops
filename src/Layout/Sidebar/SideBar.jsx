@@ -3,6 +3,7 @@ import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, IconButton } 
 import { NavLink } from "react-router-dom";
 import { FaHome, FaUser, FaCog, FaBell, FaChartBar, FaClipboardList, FaUsers, FaEnvelope, FaBuilding, FaBars } from "react-icons/fa";
 
+
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Dashboard", path: "/dashboard" },

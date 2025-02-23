@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 
-const MaterialTable = ({ columns, initialData, onUpdate }) => {
+const MaterialTable = ({ columns = [], initialData = [], onUpdate, onDelete }) => {
   const [search, setSearch] = useState("");
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
@@ -30,30 +30,34 @@ console.log(data)
     setOrderBy(column);
   };
 
-  // Handle Delete
-  const handleDelete = (id) => {
-    const updatedData = data.filter((row) => row.id !== id);
-    setData(updatedData);
-  };
+  // Update data when initialData changes
+  React.useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
 
-  // Handle Update
-  const handleUpdate = (row) => {
-    onUpdate(row);
-  };
+
 
   // Filter & Sort Data
   const filteredData = data
     .filter((row) => {
-      return columns.some((col) =>
-        row[col.field]?.toString().toLowerCase().includes(search.toLowerCase())
-      );
+      if (!search) return true;
+      return columns.some((col) => {
+        const value = row[col.field];
+        return value?.toString().toLowerCase().includes(search.toLowerCase());
+      });
     })
     .sort((a, b) => {
       if (!orderBy) return 0;
+      const aValue = a[orderBy];
+      const bValue = b[orderBy];
+      
+      if (aValue === null || aValue === undefined) return 1;
+      if (bValue === null || bValue === undefined) return -1;
+      
       if (order === "asc") {
-        return a[orderBy] > b[orderBy] ? 1 : -1;
+        return aValue > bValue ? 1 : -1;
       } else {
-        return a[orderBy] < b[orderBy] ? 1 : -1;
+        return aValue < bValue ? 1 : -1;
       }
     });
 
@@ -112,12 +116,22 @@ console.log(data)
                   ))}
                   {/* Action Buttons */}
                   <TableCell>
-                    <IconButton color="primary" onClick={() => handleUpdate(row)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(row.id)}>
-                      <Delete />
-                    </IconButton>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <IconButton 
+                        color="primary" 
+                        onClick={() => onUpdate && onUpdate(rowIndex)}
+                        size="small"
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton 
+                        color="error" 
+                        onClick={() => onDelete && onDelete(rowIndex)}
+                        size="small"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
