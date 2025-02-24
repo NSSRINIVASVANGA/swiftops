@@ -149,7 +149,7 @@ const History = () => (
 const Dashboard = () => {
   return (
    
-    <Box sx={{ display: "flex", minHeight: "100vh",p:7}}>
+    <Box sx={{ display: "flex", minHeight: "100vh"}}>
        
       <Container>
       
