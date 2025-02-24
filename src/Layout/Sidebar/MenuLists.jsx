@@ -32,12 +32,12 @@ const  bussinessAdmin = [
   ]
 
   const  financeAdmin = [
-    { icon: <FaHome />, label: "Dashboard", path: "/bussuinessUser" },
-    { icon: <FaUser />, label: "invoicing", path: "/bussuinessUser/invoicing" },
-    { icon: <FaCog />, label: "payments", path: "/bussuinessUser/payments" },
-    { icon: <FaBell />, label: "refunds", path: "/bussuinessUser/refunds" },
-    { icon: <FaBell />, label: "subscription", path: "/bussuinessUser/subscription" },
-    { icon: <FaBell />, label: "reports", path: "/bussuinessUser/reports" },
+    { icon: <FaHome />, label: "Dashboard", path: "/financeAdmin" },
+    { icon: <FaUser />, label: "invoicing", path: "/financeAdmin/invoicing" },
+    { icon: <FaCog />, label: "payments", path: "/financeAdmin/payments" },
+    { icon: <FaBell />, label: "refunds", path: "/financeAdmin/refunds" },
+    { icon: <FaBell />, label: "subscription", path: "/financeAdmin/subscription" },
+    { icon: <FaBell />, label: "reports", path: "/financeAdmin/reports" },
   ]
 
   const  marketAdmin = [
