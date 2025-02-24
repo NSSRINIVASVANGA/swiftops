@@ -1,23 +1,12 @@
 import React from "react";
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaUser, FaCog, FaBell, FaChartBar, FaClipboardList, FaUsers, FaEnvelope, FaBuilding, FaBars } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
+import menuList from "./MenuLists"
 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const menuItems = [
-    { icon: <FaHome />, label: "Dashboard", path: "/dashboard" },
-    { icon: <FaUser />, label: "Business", path: "/dashboard/business" },
-    { icon: <FaCog />, label: "Users", path: "/dashboard/users" },
-    { icon: <FaBell />, label: "Workflow", path: "/dashboard/workflow" },
-    { icon: <FaChartBar />, label: "Client", path: "/dashboard/client" },
-    { icon: <FaChartBar />, label: "Calendar", path: "/dashboard/calendar" },
-    { icon: <FaClipboardList />, label: "Appointment", path: "/dashboard/appointment" },
-    { icon: <FaUsers />, label: "Advertising", path: "/dashboard/marketing" },
-    { icon: <FaEnvelope />, label: "Subscription", path: "/dashboard/subscription" },
-    { icon: <FaEnvelope />, label: "Report", path: "/dashboard/report" },
-  ];
-
+  const menuItems = menuList.superAdmin; 
   return (
     <Drawer
       variant="permanent"
@@ -50,7 +39,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       >
         {/* Logo Image */}
         <img
-          src="../../public/swiftops.jpeg"
+          src="/swiftops.jpeg"
           alt="Logo"
           style={{
             width: "40px",
