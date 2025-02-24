@@ -2,15 +2,17 @@ import { FaHome, FaUser, FaCog, FaBell, FaChartBar, FaClipboardList, FaUsers, Fa
 
 const superAdmin = [
     { icon: <FaHome />, label: "Dashboard", path: "/superAdmin" },
-    { icon: <FaUser />, label: "Business", path: "/superAdmin/business" },
+
     { icon: <FaCog />, label: "Users", path: "/superAdmin/users" },
-    { icon: <FaBell />, label: "Workflow", path: "/superAdmin/workflow" },
-    { icon: <FaChartBar />, label: "Client", path: "/superAdmin/client" },
-    { icon: <FaChartBar />, label: "Calendar", path: "/superAdmin/calendar" },
-    { icon: <FaClipboardList />, label: "Appointment", path: "/superAdmin/appointment" },
-    { icon: <FaUsers />, label: "Advertising", path: "/superAdmin/marketing" },
-    { icon: <FaEnvelope />, label: "Subscription", path: "/superAdmin/subscription" },
+
+
+
+    { icon: <FaUsers />, label: "ActiveLogs", path: "/superAdmin/activeLogs" },
+    { icon: <FaClipboardList />, label: "Integration", path: "/superAdmin/integration" },
+
     { icon: <FaEnvelope />, label: "Report", path: "/superAdmin/report" },
+    { icon: <FaEnvelope />, label: "Settings", path: "/superAdmin/settings" },
+
   ];
 
   
