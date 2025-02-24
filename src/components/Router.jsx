@@ -5,6 +5,10 @@ import Login from "./Login/Loginform";
 import ForgetPassword from './Login/ForgetPassword';
 import ConfirmPassword from "./Login/ConfirmPassword";
 import Dashboard from "./dashboards/Dashboard";
+import ActivityLogs from "./MenuList/activityLogs/ActivityLogs";
+import Security from "./MenuList/activityLogs/Security";
+import SecuritySetting from "./MenuList/Integration/SecuritySetting";
+import Module from "./MenuList/settings/Module";
 
 // super admin routes
 import BusinessForm from "./MenuList/bussiness/Bussinessform";
@@ -54,13 +58,14 @@ const AppRoutes = () => {
         {/* Protected Layout with Nested Routes */}
         <Route path="/superAdmin" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="business" element={<BusinessForm />} />
+
           <Route path="users" element={<User />} />
-          <Route path="workflow" element={<Workflow />} />
-          <Route path="client" element={<Client />} />
-          <Route path="calendar" element={<Calendar />} />
-          <Route path="appointment" element={<Appointment />} />
-          <Route path="marketing" element={<Marketing />} />
+          <Route path="activeLogs" element={<ActivityLogs />} />
+
+          <Route path="Settings" element={<Module/>} />
+
+
+          <Route path="integration" element={<SecuritySetting/>} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="report" element={<Report />} />
           <Route path="*" element={<Navigate to="/" />} />

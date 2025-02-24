@@ -23,7 +23,7 @@ const radarData = [
 
 const Dashboard = () => {
   return (
-    <Grid container spacing={4} style={{ padding: "70px", }}>
+    <Grid container spacing={4}>
       {[ 
         { title: "Total Revenue", value: "$120,000", backgroundColor: "#ba68c8", textColor: "#fff" },
         { title: "Total Expenses", value: "$45,000", backgroundColor: "#ec407a", textColor: "#fff" },
