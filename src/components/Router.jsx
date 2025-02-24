@@ -43,6 +43,7 @@ import SocialMedia from "./MenuList/marketingCampaign/SocialMedia"
 import Email from "./MenuList/marketingCampaign/Email";
 import Sms from "./MenuList/marketingCampaign/Sms"
 import Analytics from "./MenuList/marketingCampaign/Analytics"
+import { Campaign } from "@mui/icons-material";
 
 
 
@@ -101,7 +102,7 @@ const AppRoutes = () => {
 
         <Route path="/MarketAdmin" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="campign" element={<Campign />} />
+          <Route path="campaign" element={<Campaign />} />
           <Route path="socialMedia" element={<SocialMedia />} />
           <Route path="email" element={<Email />} />
           <Route path="sms" element={<Sms />} />
