@@ -41,7 +41,7 @@ const historyData = [
 const COLORS = ["#ec407a", "#29b6f6"];
 
 const MetricsCard = ({ title, value, color }) => (
-  <Card sx={{ bgcolor: color, color: "white", p: 2 }}>
+  <Card sx={{ bgcolor: color, color: "white", p: 0,textAlign:"center" }}>
     <CardContent>
       <Typography variant="h6">{title}</Typography>
       <Typography variant="h4">{value}</Typography>
@@ -57,7 +57,7 @@ MetricsCard.propTypes = {
 const SalesChart = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6"> Total Leads</Typography>
+      <Typography variant="h6" > Total Leads</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={leadsData}>
           <XAxis dataKey="date" />
@@ -74,10 +74,10 @@ const SalesChart = () => (
 const MonthlyAcquisition = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Total Marketing Revenue Over Time</Typography>
+      <Typography variant="h6" >Total Marketing Revenue</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={revenueData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          
           <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
@@ -93,7 +93,7 @@ const MonthlyAcquisition = () => (
 const RepeatCustomers = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Repeat Customers</Typography>
+      <Typography variant="h6" >Repeat Customers</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={repeatCustomerData}>
           <XAxis dataKey="date" />
@@ -111,12 +111,12 @@ const RepeatCustomers = () => (
 const RecentOrders = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Recent Orders</Typography>
+      <Typography variant="h6" >Recent Orders</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie data={recentOrdersData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value">
             {recentOrdersData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+              <Cell key={`cell-${index}`} fill={COLORS[index]} />
             ))}
           </Pie>
           <Tooltip />
@@ -130,7 +130,7 @@ const RecentOrders = () => (
 const History = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">History</Typography>
+      <Typography variant="h6" >History</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={historyData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -149,20 +149,20 @@ const History = () => (
 const Dashboard = () => {
   return (
    
-    <Box sx={{ display: "flex", minHeight: "100vh"}}>
+    <Box sx={{ display: "flex", minHeight: "100vh",p:7}}>
        
       <Container>
       
         <Grid container spacing={3}>
           
           <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Total Revenue" value="$15,600" color="#e57373"  />
+            <MetricsCard title="Total Revenue" value="$15,600" color="#f06292"/>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <MetricsCard title="Annual Invoices" value="$6,700" color="#64b5f6" />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Annual Reports" value="$10,200" color="#f06292" />
+            <MetricsCard title="Annual Reports" value="$10,200" color="#9575cd" />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <MetricsCard title="Total Orders" value="$20,200" color="#4db6ac" />
@@ -182,4 +182,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
