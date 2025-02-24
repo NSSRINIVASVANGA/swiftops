@@ -49,7 +49,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       >
         {/* Logo Image */}
         <img
-          src="."
+          src="../../public/swiftops.jpeg"
           alt="Logo"
           style={{
             width: "40px",
