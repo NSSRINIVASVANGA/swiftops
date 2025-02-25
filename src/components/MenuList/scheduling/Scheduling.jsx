@@ -104,7 +104,7 @@ const Schedule = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 1000, margin: "auto", p: 3 }}>
+    <Box sx={{ maxWidth: 1500, margin: "auto", p: 3 }}>
       {/* Header */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h5" fontWeight="bold">
@@ -135,7 +135,7 @@ const Schedule = () => {
       </Typography>
 
       {displayedAppointments.map((appt) => (
-        <Card key={appt.id} sx={{ mb: 2, p: 2, borderLeft: `5px solid #1976D2` }}>
+                <Card key={appt.id} sx={{ mb: 2, p: 2, borderLeft: `5px solid #1976D2` }}>
           <CardContent>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               {/* Left Side: Title & Time */}
@@ -178,34 +178,81 @@ const Schedule = () => {
       <Dialog open={openNewDialog} onClose={handleCloseDialog}>
         <DialogTitle>Add New Appointment</DialogTitle>
         <DialogContent>
-          <TextField
-            fullWidth
-            label="Title"
-            margin="dense"
-            value={newAppointment.title}
-            onChange={(e) => setNewAppointment({ ...newAppointment, title: e.target.value })}
-          />
-          <TextField
-            fullWidth
-            label="Time"
-            margin="dense"
-            value={newAppointment.time}
-            onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
-          />
-          <TextField
-            fullWidth
-            label="Person"
-            margin="dense"
-            value={newAppointment.person}
-            onChange={(e) => setNewAppointment({ ...newAppointment, person: e.target.value })}
-          />
-          <TextField
-            fullWidth
-            label="Location"
-            margin="dense"
-            value={newAppointment.location}
-            onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
-          />
+        <TextField
+  fullWidth
+  label="Title"
+  margin="dense"
+  required
+  value={newAppointment.title}
+  onChange={(e) => setNewAppointment({ ...newAppointment, title: e.target.value })}
+  error={Boolean(!newAppointment.title)}
+  helperText={!newAppointment.title ? "Title is required" : ""}
+/>
+
+  <TextField
+    fullWidth
+    label="Date"
+    type="date"
+    margin="dense"
+    required
+    InputLabelProps={{ shrink: true }}
+    value={newAppointment.date}
+    onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })}
+    error={!newAppointment.date}
+    helperText={!newAppointment.date ? "Date is required" : ""}
+  />
+  <TextField
+    fullWidth
+    label="Time"
+    type="time"
+    margin="dense"
+    required
+    InputLabelProps={{ shrink: true }}
+    value={newAppointment.time}
+    onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+    error={!newAppointment.time}
+    helperText={!newAppointment.time ? "Time is required" : ""}
+  />
+  <TextField
+    fullWidth
+    label="Duration (e.g., 1 hour, 30 mins)"
+    margin="dense"
+    required
+    value={newAppointment.duration}
+    onChange={(e) => setNewAppointment({ ...newAppointment, duration: e.target.value })}
+    error={!newAppointment.duration}
+    helperText={!newAppointment.duration ? "Duration is required" : ""}
+  />
+  <TextField
+    fullWidth
+    label="Client Name"
+    margin="dense"
+    required
+    value={newAppointment.client}
+    onChange={(e) => setNewAppointment({ ...newAppointment, client: e.target.value })}
+    error={!newAppointment.client}
+    helperText={!newAppointment.client ? "Client name is required" : ""}
+  />
+  <TextField
+    fullWidth
+    label="Person"
+    margin="dense"
+    required
+    value={newAppointment.person}
+    onChange={(e) => setNewAppointment({ ...newAppointment, person: e.target.value })}
+    error={!newAppointment.person}
+    helperText={!newAppointment.person ? "Person is required" : ""}
+  />
+  <TextField
+    fullWidth
+    label="Location"
+    margin="dense"
+    required
+    value={newAppointment.location}
+    onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
+    error={!newAppointment.location}
+    helperText={!newAppointment.location ? "Location is required" : ""}
+  />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
