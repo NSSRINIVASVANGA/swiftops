@@ -1,354 +1,166 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Box,
   Typography,
   Card,
   CardContent,
-  Button,
-  Switch,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Alert,
-  IconButton,
-  Tooltip,
-  Grid,
+  Chip,
+  MenuItem,
+  Select,
   FormControl,
   InputLabel,
-  Select,
-  MenuItem,
-} from '@mui/material';
-import {
-  Code as GitHubIcon,
-  Google as GoogleIcon,
-  Message as SlackIcon,
-  Work as LinkedInIcon,
-  Settings,
-  Add as AddIcon,
-  InfoOutlined,
-  Security,
-} from '@mui/icons-material';
+  IconButton,
+  Pagination,
+} from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
 
-// Sample integrations data
-const initialIntegrations = [
-  {
-    id: 1,
-    name: 'GitHub',
-    icon: GitHubIcon,
-    status: 'connected',
-    lastSync: '2025-02-24 17:30:00',
-    apiKey: '****************************abc1',
-    enabled: true,
-  },
-  {
-    id: 2,
-    name: 'Google Workspace',
-    icon: GoogleIcon,
-    status: 'connected',
-    lastSync: '2025-02-24 17:15:00',
-    apiKey: '****************************def2',
-    enabled: true,
-  },
-  {
-    id: 3,
-    name: 'Slack',
-    icon: SlackIcon,
-    status: 'disconnected',
-    lastSync: null,
-    apiKey: null,
-    enabled: false,
-  },
-  {
-    id: 4,
-    name: 'LinkedIn',
-    icon: LinkedInIcon,
-    status: 'connected',
-    lastSync: '2025-02-24 16:45:00',
-    apiKey: '****************************ghi3',
-    enabled: false,
-  },
-];
-
-const SecuritySetting = () => {
-  const [integrations, setIntegrations] = useState(initialIntegrations);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedIntegration, setSelectedIntegration] = useState(null);
-  const [newApiKey, setNewApiKey] = useState('');
-  const [openNewDialog, setOpenNewDialog] = useState(false);
-  const [newIntegration, setNewIntegration] = useState({
-    name: '',
-    type: 'custom',
-    apiKey: '',
-    description: '',
+const IntegrationModal = () => {
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    apiKey: "",
+    status: "Active",
   });
+  const [integrations, setIntegrations] = useState([
+    { id: 1, name: "Google Analytics", type: "Analytics", apiKey: "GA-123456", status: "Active" },
+    { id: 2, name: "Slack", type: "Communication", apiKey: "SL-654321", status: "Inactive" },
+    { id: 3, name: "Stripe", type: "Payments", apiKey: "ST-987654", status: "Active" },
+    { id: 4, name: "HubSpot", type: "CRM", apiKey: "HS-456789", status: "Inactive" },
+    { id: 5, name: "Zapier", type: "Automation", apiKey: "ZP-321654", status: "Active" }
+  ]);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 3;
 
-  const handleToggle = (id) => {
-    setIntegrations(integrations.map(integration =>
-      integration.id === id ? { ...integration, enabled: !integration.enabled } : integration
-    ));
-  };
-
-  const handleOpenSettings = (integration) => {
-    setSelectedIntegration(integration);
-    setNewApiKey('');
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedIntegration(null);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleAddIntegration = () => {
-    const newId = integrations.length + 1;
-    const integration = {
-      id: newId,
-      name: newIntegration.name,
-      icon: newIntegration.type === 'github' ? GitHubIcon :
-            newIntegration.type === 'google' ? GoogleIcon :
-            newIntegration.type === 'slack' ? SlackIcon :
-            newIntegration.type === 'linkedin' ? LinkedInIcon :
-            BusinessIcon,
-      status: 'connected',
-      lastSync: new Date().toISOString().slice(0, 19).replace('T', ' '),
-      apiKey: newIntegration.apiKey,
-      enabled: true,
-    };
-    
-    setIntegrations([...integrations, integration]);
-    setOpenNewDialog(false);
-    setNewIntegration({
-      name: '',
-      type: 'custom',
-      apiKey: '',
-      description: '',
-    });
-    setShowSuccess(true);
+    setIntegrations([...integrations, { ...formData, id: Date.now() }]);
+    setFormData({ name: "", type: "", apiKey: "", status: "Active" });
+    handleClose();
   };
 
-  const handleSaveSettings = () => {
-    if (newApiKey) {
-      setIntegrations(integrations.map(integration =>
-        integration.id === selectedIntegration.id
-          ? { ...integration, apiKey: newApiKey, status: 'connected' }
+  const toggleStatus = (id) => {
+    setIntegrations(
+      integrations.map((integration) =>
+        integration.id === id
+          ? { ...integration, status: integration.status === "Active" ? "Inactive" : "Active" }
           : integration
-      ));
-    }
-    handleCloseDialog();
+      )
+    );
   };
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const displayedIntegrations = integrations.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenNewDialog(true)}
-          sx={{ 
-            backgroundColor: '#1976d2',
-            '&:hover': {
-              backgroundColor: '#1565c0'
-            }
-          }}
-        >
-          Add New Integration
-        </Button>
+    <Box display="flex" justifyContent="center" alignItems="top" width="84vw" minHeight="100vh" sx={{ backgroundColor: "#ffffff" }}>
+      <Box p={3} sx={{ backgroundColor: "#fff", maxWidth: "1350px", width: "100%", borderRadius: 3, boxShadow: 3 }}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} gap={2}>
+          <Typography variant="h4" fontWeight="bold">
+            Integrations
+          </Typography>
+          <Button variant="contained" sx={{ bgcolor: "#0000ff", color: "#fff", borderRadius: 2 }} onClick={handleOpen}>
+            Add Integration
+          </Button>
+        </Box>
+
+        {displayedIntegrations.map((integration) => (
+          <Card key={integration.id} sx={{ mb: 2, p: 2, borderRadius: 3, boxShadow: 3, backgroundColor: "#fff" }}>
+            <CardContent>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h5" fontWeight="bold">{integration.name}</Typography>
+                <IconButton onClick={() => toggleStatus(integration.id)}>
+                  <SettingsIcon />
+                </IconButton>
+              </Box>
+              <Box display="flex" justifyContent="left" my={1}>
+                <Chip
+                  label={integration.status}
+                  color={integration.status === "Active" ? "success" : "error"}
+                  sx={{ fontSize: "0.9rem", px: 2, py: 1, borderRadius: 2 }}
+                />
+              </Box>
+              <Typography variant="body2" textAlign="left">Type: {integration.type}</Typography>
+            </CardContent>
+          </Card>
+        ))}
+
+        <Box display="flex" justifyContent="center" mt={3}>
+          <Pagination
+            count={Math.ceil(integrations.length / itemsPerPage)}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
       </Box>
 
-      <div className="mb-6">
-        <Typography variant="h4" className="text-gray-800 mb-2">
-          Integrations
-        </Typography>
-        <Typography variant="body1" className="text-gray-600">
-          Manage your third-party connections and API integrations
-        </Typography>
-      </div>
-
-
-      {/* Add New Integration Dialog */}
-      <Dialog open={openNewDialog} onClose={() => setOpenNewDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          Add New Integration
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ textAlign: "center", fontWeight: "bold" }}>Add New Integration</DialogTitle>
         <DialogContent>
-          <Box className="mt-4 flex flex-col gap-6">
-            <TextField
-              fullWidth
-              label="Integration Name"
-              focused
-          
-              value={newIntegration.name}
-              onChange={(e) => setNewIntegration({ ...newIntegration, name: e.target.value })}
-              variant="outlined"
-              placeholder="Enter integration name"
-            />
-            
-            <FormControl fullWidth>
-              <InputLabel>Integration Type</InputLabel>
-              <Select
-                value={newIntegration.type}
-                onChange={(e) => setNewIntegration({ ...newIntegration, type: e.target.value })}
-
-                label="Integration Type"
-                focused
-
-              >
-                <MenuItem value="github">GitHub</MenuItem>
-                <MenuItem value="google">Google Workspace</MenuItem>
-                <MenuItem value="slack">Slack</MenuItem>
-                <MenuItem value="linkedin">LinkedIn</MenuItem>
-                <MenuItem value="custom">Custom Integration</MenuItem>
-
-              </Select>
-            </FormControl>
-
-            <TextField
-              fullWidth
-              label="API Key"
-              type="password"
-              focused
-              value={newIntegration.apiKey}
-              onChange={(e) => setNewIntegration({ ...newIntegration, apiKey: e.target.value })}
-              variant="outlined"
-              placeholder="Enter API key"
-            />
-
-            <TextField
-              fullWidth
-              label="Description"
-              focused
-              multiline
-              rows={3}
-              value={newIntegration.description}
-              onChange={(e) => setNewIntegration({ ...newIntegration, description: e.target.value })}
-              variant="outlined"
-              placeholder="Enter integration description"
-            />
-
-            <Box className="mt-2">
-              <Typography variant="body2" className="text-gray-600 flex items-center gap-1">
-                <InfoOutlined fontSize="small" />
-                API keys are encrypted and stored securely
-              </Typography>
-            </Box>
-          </Box>
+          <TextField
+            margin="dense"
+            label="Integration Name"
+            name="name"
+            fullWidth
+            variant="outlined"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            label="Integration Type"
+            name="type"
+            fullWidth
+            variant="outlined"
+            value={formData.type}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            label="API Key"
+            name="apiKey"
+            fullWidth
+            variant="outlined"
+            value={formData.apiKey}
+            onChange={handleChange}
+          />
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Status</InputLabel>
+            <Select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+            >
+              <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="Inactive">Inactive</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenNewDialog(false)} color="inherit">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleAddIntegration}
-            variant="contained"
-            className="bg-blue-600 hover:bg-blue-700"
-            disabled={!newIntegration.name || !newIntegration.apiKey}
-          >
+        <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 2 }}>
+          <Button onClick={handleClose} sx={{ bgcolor: "#e0e0e0", color: "#000", borderRadius: 2 }}>Cancel</Button>
+          <Button variant="contained" sx={{ bgcolor: "#0000ff", color: "#fff", borderRadius: 2 }} onClick={handleAddIntegration}>
             Add Integration
           </Button>
         </DialogActions>
       </Dialog>
-
-      <Alert severity="info" className="mb-6">
-        Ensure your API keys are kept secure and regularly rotated for optimal security.
-      </Alert>
-
-      <Grid container spacing={3}>
-        {integrations.map((integration) => (
-          <Grid item xs={12} key={integration.id}>
-            <Card className="hover:shadow-md transition-shadow duration-200 w-full">
-              <CardContent>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <integration.icon className="text-gray-700 text-4xl" />
-                    <div>
-                      <Typography variant="h6" className="font-medium">
-                        {integration.name}
-                      </Typography>
-                      <Typography variant="body2" className="text-gray-500">
-                        {integration.status === 'connected' ? (
-                          <span className="text-green-600">●</span>
-                        ) : (
-                          <span className="text-red-600">●</span>
-                        )}
-                        <span className="ml-1">
-                          {integration.status.charAt(0).toUpperCase() + integration.status.slice(1)}
-                        </span>
-                      </Typography>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      checked={integration.enabled}
-                      onChange={() => handleToggle(integration.id)}
-                      color="primary"
-                    />
-                    <Tooltip title="Integration Settings">
-                      <IconButton
-                        onClick={() => handleOpenSettings(integration)}
-                        size="small"
-                        className="text-gray-600"
-                      >
-                        <Settings />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-sm text-gray-600 mt-4">
-                  <div className="flex items-center gap-1">
-                    <Security fontSize="small" />
-                    <span>API Key: {integration.apiKey || 'Not configured'}</span>
-                  </div>
-                  {integration.lastSync && (
-                    <Typography variant="body2" className="text-gray-500">
-                      Last sync: {integration.lastSync}
-                    </Typography>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          {selectedIntegration?.name} Settings
-        </DialogTitle>
-        <DialogContent>
-          <div className="mt-4">
-            <TextField
-              fullWidth
-              label="API Key"
-              type="password"
-              value={newApiKey}
-              onChange={(e) => setNewApiKey(e.target.value)}
-              variant="outlined"
-              placeholder="Enter new API key"
-            />
-            <Typography variant="body2" className="mt-2 text-gray-600 flex items-center gap-1">
-              <InfoOutlined fontSize="small" />
-              API keys are encrypted and stored securely
-            </Typography>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="inherit">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSaveSettings}
-            variant="contained"
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    </Box>
   );
 };
 
-export default SecuritySetting;
+export default IntegrationModal;
