@@ -40,25 +40,7 @@ const ReportDashboard = () => {
     setSelectedReport(null);
   };
 
-  // Handle export
-  // const handleExport = () => {
-  //   const fileName = `${selectedReport.title.replace(/\s+/g, "_")}.${exportFormat.toLowerCase()}`;
-  //   const blob = new Blob([""], { type: "text/plain" });
-  //   const link = document.createElement("a");
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = fileName;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  //   handleClose();
-  // };
-  // const handleOpenSettings = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleCloseSettings = () => {
-  //   setAnchorEl(null);
-  // };
+  
   const handleExport = () => {
     if (!selectedReport) return;
 
