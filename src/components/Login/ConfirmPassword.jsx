@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -8,19 +8,29 @@ import {
   Paper,
   InputAdornment,
   IconButton,
+  keyframes,
 } from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const ConfirmPassword= () => {
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const ConfirmPassword = () => {
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,118 +39,190 @@ const ConfirmPassword= () => {
       return;
     }
     alert("Password has been reset successfully!");
-    navigate("/login"); // Redirect to Login page
+    navigate("/login");
   };
 
   return (
     <Box
       sx={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        backgroundColor: "#f4f4f4",
-        width: "100vw",
-        height: "100vh",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        background: `linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)),
+                     url('https://img.freepik.com/free-vector/paper-style-dynamic-lines-background_23-2149008629.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <Paper
-        elevation={5}
+      <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                marginTop: "100px",
+                marginLeft: "50px",
+              }}
+            >
+              <Box
+                sx={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  textShadow: "2px 2px 10px rgba(0, 0, 0, 0.5)",
+                  backgroundImage: "url('./swiftops text.png')", 
+                  backgroundSize: "contain", 
+                  backgroundPosition: "center", 
+                  backgroundRepeat: "no-repeat", 
+                  padding: "20px", 
+                  width: "100%", 
+                  height: "350px", 
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "-150px",
+                  marginLeft:"50px",
+                }}
+              ></Box>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{
+                  fontSize: "30px",
+                  fontWeight: "bold",
+                  fontFamily: "Arial, sans-serif",
+                  color: "white",
+                  marginLeft: "40px",
+                  animation: `${fadeIn} 1.5s ease-in-out`,
+                }}
+              >
+                <br />
+                Your Workforce,
+                <br />
+                Your Way, <br />
+                Start Building Today
+              </Typography>
+            </Box>
+      
+      <Box
         sx={{
-          p: 4,
-          width: 400,
-          textAlign: "center",
+          flex: 1,
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
-          Reset Password
-        </Typography>
-
-        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-          {/* OTP Field */}
-          <TextField
-            label="Enter OTP"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <VpnKeyIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {/* New Password Field */}
-          <TextField
-            label="New Password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {/* Confirm Password Field */}
-          <TextField
-            label="Confirm Password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            type={showConfirmPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {/* Submit Button */}
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
+        <Paper
+          elevation={10}
+          sx={{
+            p: 4,
+            width: 400,
+            height:500,
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            borderRadius: "15px",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(12px)",
+            boxShadow: "0px 1px 1px rgba(255, 255, 255, 0.2)",
+            animation: `${fadeIn} 1s ease-in-out`,
+            "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#ddd" },
+                  "&:hover fieldset": { borderColor: "#bbb" },
+                  "&.Mui-focused fieldset": { borderColor: "#fff" },
+                  color: "white",
+                },
+                "& .MuiInputLabel-root": { color: "#fff" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#fff" },
+                input: { color: "#fff" },
+          }}
+        >
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{ fontSize: "24px", fontWeight: "bold", color: "#fff" }}
+          >
             Reset Password
-          </Button>
-        </form>
-      </Paper>
+          </Typography>
+
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <TextField
+              label="Enter OTP"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+            />
+
+            <TextField
+              label="New Password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+            />
+
+            <TextField
+              label="Conform Password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+             
+              sx={{ mt: 3, backgroundColor: "#fff", color: "#000" ,fontWeight:"bold",width:"200px"}}
+            >
+              Reset Password
+            </Button>
+          </form>
+        </Paper>
+      </Box>
     </Box>
   );
 };
