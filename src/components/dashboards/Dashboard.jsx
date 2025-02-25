@@ -1,8 +1,8 @@
 import React from "react";
-import BuDashboard from "./BuDashboard";  
+import Admin from "./AdminDashboard"
 
 const Dashboard = () => {
-  return <BuDashboard />; 
+  return <Admin />; 
 };
 
 export default Dashboard;

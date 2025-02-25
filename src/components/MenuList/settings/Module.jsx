@@ -61,11 +61,11 @@ const Module = () => {
 
       {/* Main Settings Card */}
       <Card className="mb-8 shadow-sm">
-        <CardContent className="space-y-8 p-6">
+        <CardContent sx={{ p: 4 }}>
           {/* Platform Identity */}
-          <div className="py-2">
-            <Typography variant="h6" className="mb-6 flex items-center gap-3">
-              <BusinessIcon className="text-gray-600" />
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <BusinessIcon sx={{ color: 'text.secondary' }} />
               Platform Identity
             </Typography>
             <TextField
@@ -74,15 +74,15 @@ const Module = () => {
               variant="outlined"
               value={settings.platformName}
               onChange={handleChange('platformName')}
-              className="mb-6"
+              sx={{ mb: 3 }}
             />
-          </div>
+          </Box>
 
-          <Divider className="my-6" />
+          <Divider sx={{ my: 4 }} />
 
           {/* Multi-Tenancy Settings */}
-          <div className="py-2">
-            <Typography variant="h6" className="mb-7 flex items-center gap-3">
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
               <BusinessIcon className="text-gray-600" />
               Multi-Tenancy Configuration
             </Typography>
@@ -99,13 +99,13 @@ const Module = () => {
                 color="primary"
               />
             </div>
-          </div>
+          </Box>
 
-          <Divider className="my-4" />
+          <Divider sx={{ my: 4 }} />
 
           {/* Backup Settings */}
-          <div className="py-3">
-            <Typography variant="h6" className="mb-9 flex items-center gap-5">
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
               <BackupIcon className="text-gray-800" />
               Backup Configuration
             </Typography>
@@ -125,7 +125,7 @@ const Module = () => {
                 Last backup: {settings.lastBackup}
               </Typography>
             </FormControl>
-          </div>
+          </Box>
         </CardContent>
       </Card>
 

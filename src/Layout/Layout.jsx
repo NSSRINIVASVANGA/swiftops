@@ -34,7 +34,7 @@ const Layout = () => {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </Box>
         {/* Page Content */}
-        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: "64px", overflowY: "auto" }}>
+        <Box component="main" sx={{ flexGrow: 1, mt: "64px", overflowY: "auto" }}>
           <Outlet />
         </Box>
       </Box>

@@ -1,63 +1,137 @@
-import PropTypes from "prop-types";
-import { Container, Grid, Box, Card, CardContent, Typography } from "@mui/material";
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import React from 'react';
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  LinearProgress,
+  Avatar,
+  IconButton,
+  Button,
+  Divider,
+} from '@mui/material';
+import {
+  People as PeopleIcon,
+  Settings as SettingsIcon,
+  Security as SecurityIcon,
+  Storage as StorageIcon,
+  Speed as SpeedIcon,
+  Notifications as NotificationsIcon,
+  ArrowUpward as ArrowUpwardIcon,
+  ArrowDownward as ArrowDownwardIcon,
+  MoreVert as MoreVertIcon,
+  TrendingUp as TrendingUpIcon,
+  Assessment as AssessmentIcon,
+  MonetizationOn as MonetizationOnIcon,
+  Group as GroupIcon,
+} from '@mui/icons-material';
+import {
+  AreaChart,
+  Area,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
-
-const leadsData = [
-  { date: "22/07", leads: 300 },
-  { date: "24/07", leads: 280 },
-  { date: "26/07", leads: 350 },
-  { date: "28/07", leads: 250 },
+// Sample data for charts
+const userActivityData = [
+  { month: 'Jan', active: 4000, new: 2400, total: 6400 },
+  { month: 'Feb', active: 3000, new: 1398, total: 4398 },
+  { month: 'Mar', active: 2000, new: 9800, total: 11800 },
+  { month: 'Apr', active: 2780, new: 3908, total: 6688 },
+  { month: 'May', active: 1890, new: 4800, total: 6690 },
+  { month: 'Jun', active: 2390, new: 3800, total: 6190 },
 ];
 
 const revenueData = [
-  { month: "Jan", income: 10, users: 5 },
-  { month: "Feb", income: 15, users: 7 },
-  { month: "Mar", income: 20, users: 10 },
-  { month: "Apr", income: 12, users: 6 },
-  { month: "May", income: 18, users: 9 },
+  { name: 'Mon', revenue: 4000 },
+  { name: 'Tue', revenue: 3000 },
+  { name: 'Wed', revenue: 2000 },
+  { name: 'Thu', revenue: 2780 },
+  { name: 'Fri', revenue: 1890 },
+  { name: 'Sat', revenue: 2390 },
+  { name: 'Sun', revenue: 3490 },
 ];
 
-const repeatCustomerData = [
-  { date: "22/07", firstTime: 8, returning: 2 },
-  { date: "24/07", firstTime: 7, returning: 3 },
-  { date: "26/07", firstTime: 6, returning: 4 },
-  { date: "28/07", firstTime: 5, returning: 5 },
+const userTypeData = [
+  { name: 'Premium', value: 400, color: '#0088FE' },
+  { name: 'Basic', value: 300, color: '#00C49F' },
+  { name: 'Free', value: 300, color: '#FFBB28' },
 ];
 
-const recentOrdersData = [
-  { name: "Returning", value: 83 },
-  { name: "First Time", value: 17 },
+const performanceData = [
+  { category: 'CPU', current: 85, target: 95 },
+  { category: 'Memory', current: 75, target: 85 },
+  { category: 'Storage', current: 92, target: 90 },
+  { category: 'Network', current: 88, target: 90 },
 ];
 
-const historyData = [
-  { month: "January", value: 10000, goal: 20000 },
-  { month: "February", value: 14000, goal: 20000 },
-  { month: "March", value: 4000, goal: 20000 },
-  { month: "April", value: 12000, goal: 20000 },
-  { month: "May", value: 14000, goal: 30000 },
+const stats = [
+  {
+    title: 'Total Revenue',
+    value: '$124,592',
+    change: '+14.2%',
+    icon: MonetizationOnIcon,
+    color: 'bg-green-500',
+    trend: 'up',
+  },
+  {
+    title: 'Active Users',
+    value: '8,549',
+    change: '+8.1%',
+    icon: GroupIcon,
+    color: 'bg-blue-500',
+    trend: 'up',
+  },
+  {
+    title: 'Growth Rate',
+    value: '12.5%',
+    change: '+2.3%',
+    icon: TrendingUpIcon,
+    color: 'bg-purple-500',
+    trend: 'up',
+  },
+  {
+    title: 'Performance',
+    value: '94.2%',
+    change: '-0.8%',
+    icon: AssessmentIcon,
+    color: 'bg-orange-500',
+    trend: 'down',
+  },
 ];
 
-const COLORS = ["#ec407a", "#29b6f6"];
 
 const MetricsCard = ({ title, value, color }) => (
-  <Card sx={{ bgcolor: color, color: "white", p: 2 }}>
+  <Card sx={{ bgcolor: color, color: "white", p: 0, textAlign: "center" }}>
     <CardContent>
       <Typography variant="h6">{title}</Typography>
       <Typography variant="h4">{value}</Typography>
     </CardContent>
   </Card>
 );
+
 MetricsCard.propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   color: PropTypes.string.isRequired,
 };
 
 const SalesChart = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6"> Total Leads</Typography>
+      <Typography variant="h6" gutterBottom> Total Leads</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={leadsData}>
           <XAxis dataKey="date" />
@@ -74,10 +148,9 @@ const SalesChart = () => (
 const MonthlyAcquisition = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Total Marketing Revenue Over Time</Typography>
+      <Typography variant="h6" gutterBottom>Total Marketing Revenue</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={revenueData}>
-          <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
@@ -93,7 +166,7 @@ const MonthlyAcquisition = () => (
 const RepeatCustomers = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Repeat Customers</Typography>
+      <Typography variant="h6" gutterBottom>Repeat Customers</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={repeatCustomerData}>
           <XAxis dataKey="date" />
@@ -111,12 +184,12 @@ const RepeatCustomers = () => (
 const RecentOrders = () => (
   <Card>
     <CardContent>
-      <Typography variant="h6">Recent Orders</Typography>
+      <Typography variant="h6" gutterBottom>Recent Orders</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie data={recentOrdersData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value">
             {recentOrdersData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+              <Cell key={`cell-${index}`} fill={COLORS[index]} />
             ))}
           </Pie>
           <Tooltip />
@@ -127,58 +200,36 @@ const RecentOrders = () => (
   </Card>
 );
 
-const History = () => (
-  <Card>
-    <CardContent>
-      <Typography variant="h6">History</Typography>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={historyData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#0088FE" />
-          <Bar dataKey="goal" fill="#00C49F" />
-        </BarChart>
-      </ResponsiveContainer>
-    </CardContent>
-  </Card>
-);
+
 
 const Dashboard = () => {
-  return (
-   
-    <Box sx={{ display: "flex", minHeight: "100vh"}}>
-       
-      <Container>
-      
-        <Grid container spacing={3}>
-          
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Total Revenue" value="$15,600" color="#e57373"  />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Annual Invoices" value="$6,700" color="#64b5f6" />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Annual Reports" value="$10,200" color="#f06292" />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricsCard title="Total Orders" value="$20,200" color="#4db6ac" />
-          </Grid>
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-         
+  return (
+    <Box
+      sx={{
+        marginLeft: isSidebarOpen ? "15px" : "80px",
+        width: `calc(100% - ${isSidebarOpen ? "15px" : "80px"})`,
+        height: "auto",
+        display: "flex",
+        overflow: "hidden",
+      }}
+    >
+      <Container maxWidth={false} disableGutters sx={{ flexGrow: 1, height: "100%" }}>
+        <Grid container spacing={2} sx={{ height: "100%" }}>
+          <Grid item xs={12} sm={6} md={3}><MetricsCard title="Total Revenue" value="$15,600" color="#f06292" /></Grid>
+          <Grid item xs={12} sm={6} md={3}><MetricsCard title="Annual Invoices" value="$6,700" color="#64b5f6" /></Grid>
+          <Grid item xs={12} sm={6} md={3}><MetricsCard title="Annual Reports" value="$10,200" color="#9575cd" /></Grid>
+          <Grid item xs={12} sm={6} md={3}><MetricsCard title="Total Orders" value="$20,200" color="#4db6ac" /></Grid>
+
           <Grid item xs={12} md={6}><SalesChart /></Grid>
           <Grid item xs={12} md={6}><MonthlyAcquisition /></Grid>
           <Grid item xs={12} md={6}><RepeatCustomers /></Grid>
           <Grid item xs={12} md={6}><RecentOrders /></Grid>
-          <Grid item xs={12}><History /></Grid>
+         
         </Grid>
       </Container>
-      
     </Box>
-    
   );
 };
 
