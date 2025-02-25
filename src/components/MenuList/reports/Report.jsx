@@ -15,6 +15,8 @@ import {
   Typography,
 } from "@mui/material";
  import DownloadIcon from "@mui/icons-material/Download";
+import SearchIcon from "@mui/icons-material/Search";
+import { TextField, InputAdornment } from "@mui/material";
 
 const reports = [
   { id: 1, title: "Monthly Revenue Report", type: "Financial", lastGenerated: "2024-02-20",content: "Detailed financial revenue analysis for the past month." },
@@ -27,6 +29,12 @@ const ReportDashboard = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [exportFormat, setExportFormat] = useState("PDF");
   const [timeRange, setTimeRange] = useState("Last 30 Days");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredReports = reports.filter(report => 
+    report.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    report.type.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Open modal
   const handleOpen = (report) => {
@@ -80,17 +88,32 @@ const ReportDashboard = () => {
 
   return (
     <Box>
-    <Box sx={{ width:"100%", margin: "auto", mt: 5 }}>
+    <Box sx={{ width:"100%", margin: "auto", mt: 2 }}>
       <Typography variant="h4" fontWeight="bold">
         Reports Dashboard
       </Typography>
       <Typography variant="subtitle1" color="black" mb={2}>
         Generate and export business reports
         </Typography>
-    
+
+        <Box sx={{ display: 'flex', gap: 2, mb: 3, marginLeft: '10px', marginRight: '0px', width: '98%' }}>
+          <TextField
+            fullWidth
+            placeholder="Search reports..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon color="action" />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
      
-      {reports.map((report) => (
-        <Card key={report.id} sx={{ width:'100%',mb: 2, p: 2 ,marginLeft:'20px',marginRight:'120px'}}>
+      {filteredReports.map((report) => (
+        <Card key={report.id} sx={{ width:'98%', mb: 2, p: 2, marginLeft:'10px', marginRight:'0px'}}>
           <CardContent>
             <Typography variant="h6">{report.title}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -114,12 +137,17 @@ const ReportDashboard = () => {
 
       {/* Export Modal */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle >Export Reports</DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{ pb: 2  }} >Export Reports</DialogTitle>
+        <DialogContent sx={{ p: 3 }}>
+          
           {/* Export Format Selection */}
-          <FormControl fullWidth sx={{ mt: 2, }}>
-            <InputLabel>Export Format</InputLabel>
-            <Select value={exportFormat} onChange={(e) => setExportFormat(e.target.value)}>
+          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'medium' }}>Export Format</Typography>
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <Select
+              value={exportFormat}
+              onChange={(e) => setExportFormat(e.target.value)}
+              displayEmpty
+            >
               <MenuItem value="PDF">PDF</MenuItem>
               <MenuItem value="CSV">CSV</MenuItem>
               <MenuItem value="Excel">Excel</MenuItem>
@@ -127,9 +155,13 @@ const ReportDashboard = () => {
           </FormControl>
 
           {/* Time Range Selection */}
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>Time Range</InputLabel>
-            <Select value={timeRange} onChange={(e) => setTimeRange(e.target.value)}>
+          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'medium' }}>Time Range</Typography>
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <Select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              displayEmpty
+            >
               <MenuItem value="Last 7 Days">Last 7 Days</MenuItem>
               <MenuItem value="Last 30 Days">Last 30 Days</MenuItem>
               <MenuItem value="Last 6 Months">Last 6 Months</MenuItem>
