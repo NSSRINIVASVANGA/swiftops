@@ -82,6 +82,7 @@ const CRM = () => {
   className="mt-2" 
   style={{ marginTop: "10px" }} 
 />
+
                 </CardContent>
               <CardActions>
                 <IconButton onClick={() => handleOpenForm(lead)} className="text-blue-500">

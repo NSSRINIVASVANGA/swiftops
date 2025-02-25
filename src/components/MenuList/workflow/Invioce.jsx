@@ -4,8 +4,7 @@ import {
   IconButton, Chip, Typography, Dialog, DialogActions, DialogContent,
   DialogTitle, TextField, Button
 } from "@mui/material";
-import { Edit, Delete, Visibility, Search, Add } from "@mui/icons-material";
-
+import { Edit, Delete, Visibility, Search, Add, Print, FormatUnderlined, } from "@mui/icons-material";
 
 const initialInvoices = [
   { client: "Acme Corp", amount: "$1200", status: "Paid", date: "2025-02-20", color: "success" },
@@ -65,7 +64,7 @@ const InvoiceTable = () => {
   return (
     <Paper sx={{ padding: 2, margin: 2 }}>
       <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: "bold" }}>Invoicing</Typography>
-      <Button variant="contained" startIcon={<Add />} onClick={() => setOpenCreate(true)} sx={{ marginBottom: 2 }}>Create New Invoice</Button>
+      <Button variant="contained" startIcon={<Add />} onClick={() => setOpenCreate(true)} sx={{ marginBottom: 2, marginTop:-7, marginLeft:90 }}>Create New Invoice</Button>
       <TextField
         label="Search by Client"
         fullWidth
@@ -74,7 +73,7 @@ const InvoiceTable = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      
+       <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: "bold" }}>Recent Invoicing</Typography>
       <TableContainer>
         <Table>
           <TableHead>
@@ -119,8 +118,32 @@ const InvoiceTable = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Edit Invoice Dialog */}
-      <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
+      {/* View Invoice Dialog */}
+      <Dialog  open={openView} onClose={() => setOpenView(false)}>
+        <DialogTitle  variant="h4"  sx={{margin:3, marginLeft:30}}><b>Invoice</b></DialogTitle>
+        <DialogContent>
+          <Typography ><b>{currentInvoice.client}</b> </Typography>
+          <Typography sx={{marginTop:5}}>Hello, David
+          Thanks a lot because you keep purchasing our products. Our company promises to provide high quality products for you as well as outstanding customer service for every transaction.All accounts are to be paid within 7 days from receipt of invoice. To be paid by cheque or credit card or direct payment online. If account is not paid within 7 days the credits details supplied as confirmation of work undertaken will be charged the agreed quoted fee noted above.</Typography>
+          <Typography sx={{marginTop:5}}>Billing Address<br/>
+                      Stanley Jones<br/>
+                       795 Folsom Ave, Suite 600<br/>
+                       San Francisco, CA 94107<br/>
+                       P: (123) 456-7890</Typography><br/>
+
+           
+          <Typography><b>Amount:</b> {currentInvoice.amount}</Typography>
+          <Typography><b>Status:</b> {currentInvoice.status}</Typography>
+          <Typography><b>Date:</b> {currentInvoice.date}</Typography>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button startIcon={<Print />} onClick={() => setOpenView(false)}>Print</Button>
+          <Button onClick={() => setOpenView(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+       {/* Edit Invoice Dialog */}
+       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
         <DialogTitle>Edit Invoice</DialogTitle>
         <DialogContent>
           <TextField label="Client" fullWidth margin="dense" value={currentInvoice.client} onChange={(e) => setCurrentInvoice({ ...currentInvoice, client: e.target.value })} />
@@ -133,6 +156,7 @@ const InvoiceTable = () => {
           <Button onClick={handleSave} variant="contained">Save</Button>
         </DialogActions>
       </Dialog>
+      
     </Paper>
   );
 };

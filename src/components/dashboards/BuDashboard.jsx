@@ -73,7 +73,7 @@ const BuDashboard = () => {
 
   return (
     <Box sx={{ p: isMobile ? 2 : 4, width: "100%", background: "linear-gradient(135deg, #f8f9fa 30%, #e9ecef 90%)", minHeight: "100vh" }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: "bold", textAlign: "center" }}>Business Dashboard</Typography>
+      <Typography variant="h4" sx={{ mb: 3, fontWeight: "bold", textAlign: "center" }}>Business  User  Dashboard</Typography>
 
       {/* Summary Cards */}
       <Grid container spacing={3}>
