@@ -117,7 +117,23 @@ const ReportDashboard = () => {
       </Box>
      
       {filteredReports.map((report) => (
-        <Card key={report.id} sx={{ width:'98%', mb: 2, p: 2, marginLeft:'10px', marginRight:'0px'}}>
+        <Card 
+          key={report.id} 
+          sx={{ 
+            width:'98%', 
+            mb: 2, 
+            p: 2, 
+            marginLeft:'10px', 
+            marginRight:'0px',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)',
+              bgcolor: '#f8f9ff'
+            },
+            cursor: 'pointer'
+          }}
+        >
           <CardContent>
             <Typography variant="h6">{report.title}</Typography>
             <Typography variant="body2" color="textSecondary">
@@ -131,7 +147,13 @@ const ReportDashboard = () => {
               startIcon={<DownloadIcon />}
               onClick={() => handleOpen(report)}
               fullWidth
-              sx={{width:'90%',marginLeft:'2px'}}
+              sx={{
+                width:'90%',
+                marginLeft:'2px',
+                '&:hover': {
+                  bgcolor: '#1565c0'
+                }
+              }}
             >
               Export Report
             </Button>
