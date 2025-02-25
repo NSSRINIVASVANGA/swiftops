@@ -97,19 +97,26 @@ const ReportDashboard = () => {
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 2, mb: 3, marginLeft: '10px', marginRight: '0px', width: '98%' }}>
-          <TextField
-            fullWidth
-            placeholder="Search reports..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+            <TextField
+              fullWidth
+              placeholder="Search reports..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              startIcon={<SearchIcon />}
+              onClick={() => {}}
+              sx={{
+                minWidth: '120px',
+                bgcolor: '#1976d2',
+                '&:hover': { bgcolor: '#1565c0' }
+              }}
+            >
+              Search
+            </Button>
+          </Box>
         </Box>
      
       {filteredReports.map((report) => (
