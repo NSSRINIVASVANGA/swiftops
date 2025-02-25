@@ -89,15 +89,18 @@ const ReportDashboard = () => {
   return (
     <Box>
     <Box sx={{ width:"100%", margin: "auto", mt: 2 }}>
-      <Typography variant="h4" fontWeight="bold">
-        Reports Dashboard
-      </Typography>
-      <Typography variant="subtitle1" color="black" mb={2}>
-        Generate and export business reports
-        </Typography>
-
-        <Box sx={{ display: 'flex', gap: 2, mb: 3, marginLeft: '10px', marginRight: '0px', width: '98%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Box>
+          <Typography variant="h4" fontWeight="bold">
+            Reports Dashboard
+          </Typography>
+          <Typography variant="subtitle1" color="black">
+            Generate and export business reports
+          </Typography>
+        </Box>
+        <Box sx={{ width: '300px' }}>
           <TextField
+            size="small"
             fullWidth
             placeholder="Search reports..."
             value={searchQuery}
@@ -111,6 +114,7 @@ const ReportDashboard = () => {
             }}
           />
         </Box>
+      </Box>
      
       {filteredReports.map((report) => (
         <Card key={report.id} sx={{ width:'98%', mb: 2, p: 2, marginLeft:'10px', marginRight:'0px'}}>
