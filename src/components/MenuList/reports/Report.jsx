@@ -151,7 +151,7 @@ const ReportDashboard = () => {
                 width:'90%',
                 marginLeft:'2px',
                 '&:hover': {
-                  bgcolor: '#1565c0'
+                  bgcolor: '#00ced1'
                 }
               }}
             >
@@ -162,17 +162,70 @@ const ReportDashboard = () => {
       ))}
 
       {/* Export Modal */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{ pb: 2  }} >Export Reports</DialogTitle>
-        <DialogContent sx={{ p: 3 }}>
+      <Dialog 
+        open={open} 
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            minHeight: '70vh',
+            maxHeight: '60vh',
+            position: 'absolute',
+            right: '10%',
+
+           m: 1,
+            transform: 'translateX(0)',
+            '@media (max-width: 960px)': {
+              right: '5%',
+              
+            },
+          }
+        }}
+      >
+        <DialogTitle 
+          sx={{ 
+            pb: 2,
+            borderBottom: '1px solid #e0e0e0',
+            bgcolor: '#f8f9fa',
+            fontSize: '1.5rem',
+            fontWeight: 'bold'
+          }} 
+        >
+          Export Reports
+        </DialogTitle>
+        <DialogContent sx={{ p: 4 }}>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Report Details</Typography>
+            <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary' }}>
+              {selectedReport?.content}
+            </Typography>
+          </Box>
           
           {/* Export Format Selection */}
-          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'medium' }}>Export Format</Typography>
-          <FormControl fullWidth sx={{ mb: 3 }}>
+          <Typography 
+            variant="subtitle1" 
+            sx={{ 
+              mb: 1, 
+              fontWeight: 'medium',
+              color: 'text.primary' 
+            }}
+          >
+            Export Format
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Select
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value)}
               displayEmpty
+              sx={{
+                height: '50px',
+                '& .MuiSelect-select': {
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }
+              }}
             >
               <MenuItem value="PDF">PDF</MenuItem>
               <MenuItem value="CSV">CSV</MenuItem>
@@ -181,12 +234,29 @@ const ReportDashboard = () => {
           </FormControl>
 
           {/* Time Range Selection */}
-          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'medium' }}>Time Range</Typography>
-          <FormControl fullWidth sx={{ mb: 3 }}>
+          <Typography 
+            variant="subtitle1" 
+            sx={{ 
+              mb: 1, 
+              fontWeight: 'medium',
+              color: 'text.primary' 
+            }}
+          >
+            Time Range
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 4 }}>
             <Select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
               displayEmpty
+              sx={{
+                height: '50px',
+                '& .MuiSelect-select': {
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }
+              }}
             >
               <MenuItem value="Last 7 Days">Last 7 Days</MenuItem>
               <MenuItem value="Last 30 Days">Last 30 Days</MenuItem>
@@ -195,11 +265,45 @@ const ReportDashboard = () => {
             </Select>
           </FormControl>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "flex", gap: 5, px: 3, pb: 2 }}>
-          <Button onClick={handleClose} variant="outlined">
+        <DialogActions 
+          sx={{ 
+            justifyContent: "flex", 
+            gap: 2, 
+            px: 4, 
+            py: 3,
+            borderTop: '1px solid #e0e0e0',
+            bgcolor: '#f8f9fa'
+          }}
+        >
+          <Button 
+            onClick={handleClose} 
+            variant="outlined"
+            sx={{ 
+              px: 4, 
+              py: 1,
+              borderColor: '#e0e0e0',
+              color: 'text.secondary',
+              '&:hover': {
+                borderColor: 'primary.main',
+                bgcolor: 'transparent'
+              }
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleExport} variant="contained" color="primary">
+          <Button 
+            onClick={handleExport} 
+            variant="contained" 
+            color="primary"
+            sx={{ 
+              px: 4, 
+              py: 1,
+              bgcolor: '#00ced1',
+              '&:hover': {
+                bgcolor: '#00bcd4'
+              }
+            }}
+          >
             Export Now
           </Button>
         </DialogActions>

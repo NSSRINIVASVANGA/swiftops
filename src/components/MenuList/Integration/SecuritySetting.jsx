@@ -141,23 +141,32 @@ const SecuritySetting = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <Box className="mb-6 flex justify-between items-center">
-        <div>
-          <Typography variant="h4" className="text-gray-800 mb-2">
-            Integrations
-          </Typography>
-          <Typography variant="body1" className="text-gray-600">
-            Manage your third-party connections and API integrations
-          </Typography>
-        </div>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
         <Button
           variant="contained"
+          color="primary"
           startIcon={<AddIcon />}
-          className="bg-blue-600 hover:bg-blue-700"
           onClick={() => setOpenNewDialog(true)}
+          sx={{ 
+            backgroundColor: '#1976d2',
+            '&:hover': {
+              backgroundColor: '#1565c0'
+            }
+          }}
         >
           Add New Integration
         </Button>
+      </Box>
+
+      <div className="mb-6">
+        <Typography variant="h4" className="text-gray-800 mb-2">
+          Integrations
+        </Typography>
+        <Typography variant="body1" className="text-gray-600">
+          Manage your third-party connections and API integrations
+        </Typography>
+      </div>
+
 
       {/* Add New Integration Dialog */}
       <Dialog open={openNewDialog} onClose={() => setOpenNewDialog(false)} maxWidth="sm" fullWidth>
@@ -165,10 +174,12 @@ const SecuritySetting = () => {
           Add New Integration
         </DialogTitle>
         <DialogContent>
-          <div className="mt-4 space-y-4">
+          <Box className="mt-4 flex flex-col gap-6">
             <TextField
               fullWidth
               label="Integration Name"
+              focused
+          
               value={newIntegration.name}
               onChange={(e) => setNewIntegration({ ...newIntegration, name: e.target.value })}
               variant="outlined"
@@ -180,13 +191,17 @@ const SecuritySetting = () => {
               <Select
                 value={newIntegration.type}
                 onChange={(e) => setNewIntegration({ ...newIntegration, type: e.target.value })}
+
                 label="Integration Type"
+                focused
+
               >
                 <MenuItem value="github">GitHub</MenuItem>
                 <MenuItem value="google">Google Workspace</MenuItem>
                 <MenuItem value="slack">Slack</MenuItem>
                 <MenuItem value="linkedin">LinkedIn</MenuItem>
                 <MenuItem value="custom">Custom Integration</MenuItem>
+
               </Select>
             </FormControl>
 
@@ -194,6 +209,7 @@ const SecuritySetting = () => {
               fullWidth
               label="API Key"
               type="password"
+              focused
               value={newIntegration.apiKey}
               onChange={(e) => setNewIntegration({ ...newIntegration, apiKey: e.target.value })}
               variant="outlined"
@@ -203,6 +219,7 @@ const SecuritySetting = () => {
             <TextField
               fullWidth
               label="Description"
+              focused
               multiline
               rows={3}
               value={newIntegration.description}
@@ -211,11 +228,13 @@ const SecuritySetting = () => {
               placeholder="Enter integration description"
             />
 
-            <Typography variant="body2" className="text-gray-600 flex items-center gap-1">
-              <InfoOutlined fontSize="small" />
-              API keys are encrypted and stored securely
-            </Typography>
-          </div>
+            <Box className="mt-2">
+              <Typography variant="body2" className="text-gray-600 flex items-center gap-1">
+                <InfoOutlined fontSize="small" />
+                API keys are encrypted and stored securely
+              </Typography>
+            </Box>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenNewDialog(false)} color="inherit">
@@ -231,7 +250,6 @@ const SecuritySetting = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      </Box>
 
       <Alert severity="info" className="mb-6">
         Ensure your API keys are kept secure and regularly rotated for optimal security.
@@ -239,12 +257,12 @@ const SecuritySetting = () => {
 
       <Grid container spacing={3}>
         {integrations.map((integration) => (
-          <Grid item xs={12} md={6} key={integration.id}>
-            <Card className="hover:shadow-md transition-shadow duration-200">
+          <Grid item xs={12} key={integration.id}>
+            <Card className="hover:shadow-md transition-shadow duration-200 w-full">
               <CardContent>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <integration.icon className="text-gray-700 text-3xl" />
+                  <div className="flex items-center gap-4">
+                    <integration.icon className="text-gray-700 text-4xl" />
                     <div>
                       <Typography variant="h6" className="font-medium">
                         {integration.name}
@@ -278,7 +296,7 @@ const SecuritySetting = () => {
                     </Tooltip>
                   </div>
                 </div>
-                <div className="flex items-center justify-between text-sm text-gray-600">
+                <div className="flex items-center justify-between text-sm text-gray-600 mt-4">
                   <div className="flex items-center gap-1">
                     <Security fontSize="small" />
                     <span>API Key: {integration.apiKey || 'Not configured'}</span>
