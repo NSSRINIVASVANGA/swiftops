@@ -264,7 +264,33 @@ function Userform() {
   ];
 
   return (
-    <div style={{ paddingTop: "24px", width: "100%" }}>
+    <div style={{  width: "100%" }}>
+      {/* Header with Add New Button */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "24px"
+      }}>
+        <Typography variant="h5" component="h2">
+          User Management
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClickOpen}
+          sx={{
+            backgroundColor: '#1976d2',
+            '&:hover': { backgroundColor: '#1565c0' },
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontWeight: 500
+          }}
+        >
+          Add New User
+        </Button>
+      </div>
+
       {/* Notification Snackbar */}
       <Snackbar
         open={notification.open}
@@ -281,12 +307,6 @@ function Userform() {
           {notification.message}
         </Alert>
       </Snackbar>
-      {/* Add New Button */}
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px", marginTop: "20px" }}>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-          Add New
-        </Button>
-      </div>
 
       {/* Form Popup */}
       <Dialog 
