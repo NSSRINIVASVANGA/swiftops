@@ -28,9 +28,15 @@ const IntegrationModal = () => {
     apiKey: "",
     status: "Active",
   });
-  const [integrations, setIntegrations] = useState([]);
+  const [integrations, setIntegrations] = useState([
+    { id: 1, name: "Google Analytics", type: "Analytics", apiKey: "GA-123456", status: "Active" },
+    { id: 2, name: "Slack", type: "Communication", apiKey: "SL-654321", status: "Inactive" },
+    { id: 3, name: "Stripe", type: "Payments", apiKey: "ST-987654", status: "Active" },
+    { id: 4, name: "HubSpot", type: "CRM", apiKey: "HS-456789", status: "Inactive" },
+    { id: 5, name: "Zapier", type: "Automation", apiKey: "ZP-321654", status: "Active" }
+  ]);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 3; // Change this value to set how many items per page
+  const itemsPerPage = 3;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -62,13 +68,13 @@ const IntegrationModal = () => {
   const displayedIntegrations = integrations.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="top" width="100vw" minHeight="100vh" sx={{ backgroundColor: "#f5f5f5" }}>
-      <Box p={3} sx={{ backgroundColor: "#fff", maxWidth: "900px", width: "100%", borderRadius: 3, boxShadow: 3 }}>
+    <Box display="flex" justifyContent="center" alignItems="top" width="84vw" minHeight="100vh" sx={{ backgroundColor: "#ffffff" }}>
+      <Box p={3} sx={{ backgroundColor: "#fff", maxWidth: "1350px", width: "100%", borderRadius: 3, boxShadow: 3 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} gap={2}>
           <Typography variant="h4" fontWeight="bold">
             Integrations
           </Typography>
-          <Button variant="contained" sx={{ bgcolor: "#1c1c1c", color: "#fff", borderRadius: 2 }} onClick={handleOpen}>
+          <Button variant="contained" sx={{ bgcolor: "#0000ff", color: "#fff", borderRadius: 2 }} onClick={handleOpen}>
             Add Integration
           </Button>
         </Box>
@@ -148,7 +154,7 @@ const IntegrationModal = () => {
         </DialogContent>
         <DialogActions sx={{ justifyContent: "space-between", px: 3, pb: 2 }}>
           <Button onClick={handleClose} sx={{ bgcolor: "#e0e0e0", color: "#000", borderRadius: 2 }}>Cancel</Button>
-          <Button variant="contained" sx={{ bgcolor: "#1c1c1c", color: "#fff", borderRadius: 2 }} onClick={handleAddIntegration}>
+          <Button variant="contained" sx={{ bgcolor: "#0000ff", color: "#fff", borderRadius: 2 }} onClick={handleAddIntegration}>
             Add Integration
           </Button>
         </DialogActions>
