@@ -6,7 +6,7 @@ import menuList from "./MenuLists"
 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const menuItems = menuList.bussuinessUser; 
+  const menuItems = menuList.financeAdmin; 
   return (
     <Drawer
       variant="permanent"
