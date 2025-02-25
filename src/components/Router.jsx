@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import Login from "./Login/Loginform";
+import OTPVerification from './Login/OtpVerification'
 import ForgetPassword from './Login/ForgetPassword';
 import ConfirmPassword from "./Login/ConfirmPassword";
 import Dashboard from "./dashboards/Dashboard";
@@ -9,6 +10,7 @@ import ActivityLogs from "./MenuList/activityLogs/ActivityLogs";
 import Security from "./MenuList/activityLogs/Security";
 import SecuritySetting from "./MenuList/Integration/SecuritySetting";
 import Module from "./MenuList/settings/Module";
+
 
 // super admin routes
 import BusinessForm from "./MenuList/bussiness/Bussinessform";
@@ -54,6 +56,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Login />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/conform-password" element={<ConfirmPassword />} />
+        <Route path="/otp-password" element={< OTPVerification/>} />
 
         {/* Protected Layout with Nested Routes */}
         <Route path="/superAdmin" element={<Layout />}>
