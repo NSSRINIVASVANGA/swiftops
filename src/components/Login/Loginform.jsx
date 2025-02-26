@@ -40,7 +40,7 @@ const Login = ({ onLogin }) => {
     navigate("/dashboard");
   };
   const loginHandler=()=>{
-    navigate("/dashboard");
+    navigate("/otp-password");
   }
   const forgetHandler = () => {
     navigate("/forget-password");
@@ -50,6 +50,11 @@ const Login = ({ onLogin }) => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: { xs: "column", sm: "column",md
+        :'row' },
+        padding:{xs: "1.5rem", sm: "1.5rem"},
+        gap:{xs: "1.5rem", sm: "1.5rem"},
+        overflow:"auto",
         height: "100vh",
         width: "100vw",
         background: `linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), 
@@ -63,12 +68,12 @@ const Login = ({ onLogin }) => {
       <Box
         sx={{
           flex: 1,
-          display: "flex",
+          display:{xs:"none",sm:"none",md:"flex"},
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
           marginTop: "100px",
-          marginLeft: "50px",
+          marginLeft:"50px",
         }}
       >
         <Box
@@ -98,14 +103,13 @@ const Login = ({ onLogin }) => {
             fontWeight: "bold",
             fontFamily: "Arial, sans-serif",
             color: "white",
+            width:"20vw",
             marginLeft: "40px",
             animation: `${fadeIn} 1.5s ease-in-out`,
           }}
         >
-          <br />
           Your Workforce,
-          <br />
-          Your Way, <br />
+          Your Way, 
           Start Building Today
         </Typography>
       </Box>
@@ -117,6 +121,7 @@ const Login = ({ onLogin }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginLeft: { xs: "8.5rem", sm: "8.5rem" },
         }}
       >
         <Paper
@@ -309,3 +314,5 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+
+
