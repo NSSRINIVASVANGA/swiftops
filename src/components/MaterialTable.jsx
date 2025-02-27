@@ -10,8 +10,10 @@ import {
   TableSortLabel,
   TablePagination,
   TextField,
-  IconButton
+  IconButton,
+  InputAdornment
 } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 import { Delete, Edit } from "@mui/icons-material";
 
 const MaterialTable = ({ columns = [], initialData = [], onUpdate, onDelete }) => {
@@ -77,23 +79,44 @@ console.log(data)
 
   
   return (
-    <Paper sx={{ padding: 2 }}>
+    <Paper sx={{ 
+      padding: 2,
+      backgroundColor: '#f8f9fa',
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    }}>
       {/* Search Input */}
-      <TextField
-        label="Search"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}>
+        <TextField
+          placeholder="Search"
+          variant="outlined"
+          size="small"
+          sx={{ width: '300px' }}
+          onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
 
       {/* Table */}
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: '#e9ecef' }}>
               {columns.map((col) => (
-                <TableCell key={col.field}>
+                <TableCell 
+                  key={col.field}
+                  sx={{ 
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    color: '#495057',
+                    fontFamily: '"Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif'
+                  }}>
                   <TableSortLabel
                     active={orderBy === col.field}
                     direction={orderBy === col.field ? order : "asc"}
@@ -110,9 +133,30 @@ console.log(data)
             {filteredData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, rowIndex) => (
-                <TableRow key={rowIndex}>
+                <TableRow 
+                  key={rowIndex}
+                  sx={{
+                    '&:nth-of-type(odd)': {
+                      backgroundColor: '#ffffff',
+                    },
+                    '&:nth-of-type(even)': {
+                      backgroundColor: '#f8f9fa',
+                    },
+                    '&:hover': {
+                      backgroundColor: '#e9ecef',
+                    },
+                  }}>
                   {columns.map((col) => (
-                    <TableCell key={col.field}>{row[col.field]}</TableCell>
+                    <TableCell 
+                      key={col.field}
+                      sx={{ 
+                        fontSize: '0.875rem',
+                        color: '#212529',
+                        fontFamily: '"Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif'
+                      }}
+                    >
+                      {row[col.field]}
+                    </TableCell>
                   ))}
                   {/* Action Buttons */}
                   <TableCell>
