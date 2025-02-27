@@ -24,11 +24,7 @@ import React, { useState } from "react";
     const campaignTypes = [
       "Email Campaign",
       "Social Media Campaign",
-
-
       "SMS Campaign",
-
-
     ];
 
     const Status= [

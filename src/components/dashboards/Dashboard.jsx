@@ -7,6 +7,7 @@ import SuperAdminDashboard from "./SuperAdminDashboard";
 
 const Dashboard = () => {
   return <AdminDashboard/>;
+
 };
 
 export default Dashboard;
