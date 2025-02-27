@@ -1,12 +1,10 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
   Grid,
   Card,
   CardContent,
-
   LinearProgress,
   Avatar,
   IconButton,
@@ -27,6 +25,11 @@ import {
   Assessment as AssessmentIcon,
   MonetizationOn as MonetizationOnIcon,
   Group as GroupIcon,
+  PersonOutline as PersonOutlineIcon,
+  CheckCircle as CheckCircleIcon,
+  AccountCircle as AccountCircleIcon,
+  Person as PersonIcon,
+  SupervisedUserCircle as SupervisedUserCircleIcon,
 } from '@mui/icons-material';
 import {
   AreaChart,
@@ -92,7 +95,7 @@ const stats = [
     title: 'Active Users',
     value: '8,549',
     change: '+8.1%',
-    icon: GroupIcon,
+    icon: SupervisedUserCircleIcon,
     color: 'bg-blue-500',
     trend: 'up',
   },
@@ -115,7 +118,7 @@ const stats = [
 ];
 
 
-const AdminDashboard = () => {
+const SuperAdminDashboard = () => {
   const getGradient = (color1, color2) => {
     return {
       background: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`,
@@ -156,7 +159,10 @@ const AdminDashboard = () => {
               <CardContent>
                 <div className="flex items-center justify-between mb-4">
                   <div className={`${stat.color} p-3 rounded-full bg-opacity-10`}>
-                    <stat.icon className={`text-${stat.color.split('-')[1]}-500`} />
+                    {React.createElement(stat.icon, { 
+                      className: `text-${stat.color.split('-')[1]}-500`,
+                      style: { width: '24px', height: '24px' }
+                    })}
                   </div>
                   <IconButton size="small">
                     <MoreVertIcon />
@@ -366,4 +372,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default SuperAdminDashboard;

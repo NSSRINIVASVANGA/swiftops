@@ -1,115 +1,162 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Select, MenuItem, Typography
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+  IconButton, Chip, Typography, Dialog, DialogActions, DialogContent,
+  DialogTitle, TextField, Button
 } from "@mui/material";
+import { Edit, Delete, Visibility, Search, Add, Print, FormatUnderlined, } from "@mui/icons-material";
 
-const invoices = [
-  {
-    invoice_id: "1",
-    business_id: "101",
-    client_id: "201",
-    invoice_number: "INV-001",
-    invoice_date: "2024-02-15",
-    due_date: "2024-03-15",
-    total_amount: 1500.0,
-    status: "Draft",
-    created_at: "2024-02-10",
-    updated_at: "2024-02-12"
-  },
-  {
-    invoice_id: "2",
-    business_id: "102",
-    client_id: "202",
-    invoice_number: "INV-002",
-    invoice_date: "2024-02-10",
-    due_date: "2024-03-10",
-    total_amount: 2500.0,
-    status: "Sent",
-    created_at: "2024-02-08",
-    updated_at: "2024-02-11"
-  },
-  {
-    invoice_id: "3",
-    business_id: "103",
-    client_id: "203",
-    invoice_number: "INV-003",
-    invoice_date: "2024-02-10",
-    due_date: "2024-03-10",
-    total_amount: 2500.0,
-    status: "Sent",
-    created_at: "2024-02-08",
-    updated_at: "2024-02-11"
-  }
+const initialInvoices = [
+  { client: "Acme Corp", amount: "$1200", status: "Paid", date: "2025-02-20", color: "success" },
+  { client: "Global Tech", amount: "$3500", status: "Pending", date: "2025-02-22", color: "warning" },
+  { client: "Star Industries", amount: "$850", status: "Overdue", date: "2025-02-15", color: "error" },
 ];
 
 const InvoiceTable = () => {
-  const [invoiceData, setInvoiceData] = useState(invoices);
-  const navigate = useNavigate();
+  const [invoices, setInvoices] = useState(initialInvoices);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openView, setOpenView] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+  const [currentInvoice, setCurrentInvoice] = useState({ client: "", amount: "", status: "", date: "", color: "default" });
 
-  const handleStatusChange = (id, newStatus) => {
-    setInvoiceData(prev =>
-      prev.map(invoice =>
-        invoice.invoice_id === id ? { ...invoice, status: newStatus } : invoice
-      )
-    );
+  const handleEdit = (index) => {
+    setCurrentInvoice({ ...invoices[index], index });
+    setOpenEdit(true);
   };
 
-  const handleViewInvoice = (id) => {
-    navigate(`/invoice/${id}`);
+  const handleView = (index) => {
+    setCurrentInvoice(invoices[index]);
+    setOpenView(true);
   };
+
+  const handleDelete = (index) => {
+    setInvoices(invoices.filter((_, i) => i !== index));
+  };
+
+  const handleSave = () => {
+    const updatedInvoices = [...invoices];
+    updatedInvoices[currentInvoice.index] = { ...currentInvoice, color: getStatusColor(currentInvoice.status) };
+    setInvoices(updatedInvoices);
+    setOpenEdit(false);
+  };
+
+  const handleCreate = () => {
+    if (!currentInvoice.client || !currentInvoice.amount || !currentInvoice.status || !currentInvoice.date) return;
+    setInvoices([...invoices, { ...currentInvoice, color: getStatusColor(currentInvoice.status) }]);
+    setCurrentInvoice({ client: "", amount: "", status: "", date: "", color: "default" });
+    setOpenCreate(false);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "paid": return "success";
+      case "pending": return "warning";
+      case "overdue": return "error";
+      default: return "default";
+    }
+  };
+
+  const filteredInvoices = invoices.filter((invoice) =>
+    invoice.client.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Paper sx={{ paddingTop:4,paddingleft:10, marginTop:10,marginLeft:'0%',width:'100'}}>
-      <Typography variant="h6" gutterBottom>
-        Invoice Management
-      </Typography>
+    <Paper sx={{ padding: 2, margin: 2 }}>
+      <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: "bold" }}>Invoicing</Typography>
+      <Button variant="contained" startIcon={<Add />} onClick={() => setOpenCreate(true)} sx={{ marginBottom: 2, marginTop:-7, marginLeft:90 }}>Create New Invoice</Button>
+      <TextField
+        label="Search by Client"
+        fullWidth
+        margin="dense"
+        InputProps={{ startAdornment: <Search sx={{ marginRight: 1 }} /> }}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+       <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: "bold" }}>Recent Invoicing</Typography>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Invoice Number</TableCell>
-              <TableCell>Invoice Date</TableCell>
-              <TableCell>Due Date</TableCell>
-              <TableCell>Total Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell><b>CLIENT</b></TableCell>
+              <TableCell><b>AMOUNT</b></TableCell>
+              <TableCell><b>STATUS</b></TableCell>
+              <TableCell><b>DATE</b></TableCell>
+              <TableCell><b>ACTIONS</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {invoiceData.map((invoice) => (
-              <TableRow key={invoice.invoice_id}>
-                <TableCell>{invoice.invoice_number}</TableCell>
-                <TableCell>{invoice.invoice_date}</TableCell>
-                <TableCell>{invoice.due_date}</TableCell>
-                <TableCell>${invoice.total_amount.toFixed(2)}</TableCell>
+            {filteredInvoices.map((invoice, index) => (
+              <TableRow key={index}>
+                <TableCell>{invoice.client}</TableCell>
+                <TableCell>{invoice.amount}</TableCell>
+                <TableCell><Chip label={invoice.status} color={invoice.color} /></TableCell>
+                <TableCell>{invoice.date}</TableCell>
                 <TableCell>
-                  <Select
-                    value={invoice.status}
-                    onChange={(e) => handleStatusChange(invoice.invoice_id, e.target.value)}
-                  >
-                    <MenuItem value="Draft">Draft</MenuItem>
-                    <MenuItem value="Sent">Sent</MenuItem>
-                    <MenuItem value="Paid">Paid</MenuItem>
-                    <MenuItem value="Overdue">Overdue</MenuItem>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    size="small" 
-                    onClick={() => handleViewInvoice(invoice.invoice_id)}
-                  >
-                    View
-                  </Button>
+                  <IconButton onClick={() => handleView(index)} color="primary"><Visibility /></IconButton>
+                  <IconButton onClick={() => handleEdit(index)} color="secondary"><Edit /></IconButton>
+                  <IconButton onClick={() => handleDelete(index)} color="error"><Delete /></IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Create Invoice Dialog */}
+      <Dialog open={openCreate} onClose={() => setOpenCreate(false)}>
+        <DialogTitle>Create New Invoice</DialogTitle>
+        <DialogContent>
+          <TextField label="Client" fullWidth margin="dense" value={currentInvoice.client} onChange={(e) => setCurrentInvoice({ ...currentInvoice, client: e.target.value })} />
+          <TextField label="Amount" fullWidth margin="dense" value={currentInvoice.amount} onChange={(e) => setCurrentInvoice({ ...currentInvoice, amount: e.target.value })} />
+          <TextField label="Status" fullWidth margin="dense" value={currentInvoice.status} onChange={(e) => setCurrentInvoice({ ...currentInvoice, status: e.target.value })} />
+          <TextField label="Date" type="date" fullWidth margin="dense" value={currentInvoice.date} InputLabelProps={{ shrink: true }} onChange={(e) => setCurrentInvoice({ ...currentInvoice, date: e.target.value })} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenCreate(false)}>Cancel</Button>
+          <Button onClick={handleCreate} variant="contained">Create</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* View Invoice Dialog */}
+      <Dialog  open={openView} onClose={() => setOpenView(false)}>
+        <DialogTitle  variant="h4"  sx={{margin:3, marginLeft:30}}><b>Invoice</b></DialogTitle>
+        <DialogContent>
+          <Typography ><b>{currentInvoice.client}</b> </Typography>
+          <Typography sx={{marginTop:5}}>Hello, David
+          Thanks a lot because you keep purchasing our products. Our company promises to provide high quality products for you as well as outstanding customer service for every transaction.All accounts are to be paid within 7 days from receipt of invoice. To be paid by cheque or credit card or direct payment online. If account is not paid within 7 days the credits details supplied as confirmation of work undertaken will be charged the agreed quoted fee noted above.</Typography>
+          <Typography sx={{marginTop:5}}>Billing Address<br/>
+                      Stanley Jones<br/>
+                       795 Folsom Ave, Suite 600<br/>
+                       San Francisco, CA 94107<br/>
+                       P: (123) 456-7890</Typography><br/>
+
+           
+          <Typography><b>Amount:</b> {currentInvoice.amount}</Typography>
+          <Typography><b>Status:</b> {currentInvoice.status}</Typography>
+          <Typography><b>Date:</b> {currentInvoice.date}</Typography>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button startIcon={<Print />} onClick={() => setOpenView(false)}>Print</Button>
+          <Button onClick={() => setOpenView(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+       {/* Edit Invoice Dialog */}
+       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
+        <DialogTitle>Edit Invoice</DialogTitle>
+        <DialogContent>
+          <TextField label="Client" fullWidth margin="dense" value={currentInvoice.client} onChange={(e) => setCurrentInvoice({ ...currentInvoice, client: e.target.value })} />
+          <TextField label="Amount" fullWidth margin="dense" value={currentInvoice.amount} onChange={(e) => setCurrentInvoice({ ...currentInvoice, amount: e.target.value })} />
+          <TextField label="Status" fullWidth margin="dense" value={currentInvoice.status} onChange={(e) => setCurrentInvoice({ ...currentInvoice, status: e.target.value })} />
+          <TextField label="Date" type="date" fullWidth margin="dense" value={currentInvoice.date} InputLabelProps={{ shrink: true }} onChange={(e) => setCurrentInvoice({ ...currentInvoice, date: e.target.value })} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
+          <Button onClick={handleSave} variant="contained">Save</Button>
+        </DialogActions>
+      </Dialog>
+      
     </Paper>
   );
 };

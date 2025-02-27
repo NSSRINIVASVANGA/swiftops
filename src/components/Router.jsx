@@ -39,6 +39,8 @@ import Payments from "./MenuList/Payments/Payments";
 import Refunds from "./MenuList/refunds/Refunds";
 
 // market admin routes
+import Campaignform from "./MenuList/marketingCampaign/Campaignform";
+
 import SocialMedia from "./MenuList/marketingCampaign/SocialMedia"
 import Email from "./MenuList/marketingCampaign/Email";
 import Sms from "./MenuList/marketingCampaign/Sms"
@@ -101,7 +103,7 @@ const AppRoutes = () => {
           <Route path="reports" element={<Report />} />
         </Route>
 
-        <Route path="/MarketAdmin" element={<Layout />}>
+        <Route path="/marketAdmin" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="campaign" element={<Campaignform />} />
           <Route path="socialMedia" element={<SocialMedia />} />
