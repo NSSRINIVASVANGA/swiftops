@@ -3,10 +3,11 @@ import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, IconButton } 
 import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import menuList from "./MenuLists"
-
+// superAdmin, bussinessAdmin, bussuinessUser, financeAdmin, marketAdmin 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const menuItems = menuList.bussuinessUser; 
+
+  const menuItems = menuList.marketAdmin;
   return (
     <Drawer
       variant="permanent"

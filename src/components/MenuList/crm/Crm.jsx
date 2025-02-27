@@ -76,7 +76,13 @@ const CRM = () => {
                   <Typography variant="body2" className="text-gray-700"><Event className="mr-2" /> <strong>Last Contact:</strong> {lead.lastContact}</Typography>
                   <Typography variant="body2" className="text-gray-700"><MonetizationOn className="mr-2" /> <strong>Deal Value:</strong> {lead.dealValue}</Typography>
                 </div>
-                <Chip label={lead.status} color={lead.status === "Lead" ? "warning" : "success"} />
+                <Chip 
+  label={lead.status} 
+  color={lead.status === "Lead" ? "warning" : "success"} 
+  className="mt-2" 
+  style={{ marginTop: "10px" }} 
+/>
+
                 </CardContent>
               <CardActions>
                 <IconButton onClick={() => handleOpenForm(lead)} className="text-blue-500">

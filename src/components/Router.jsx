@@ -10,6 +10,7 @@ import ActivityLogs from "./MenuList/activityLogs/ActivityLogs";
 import Security from "./MenuList/activityLogs/Security";
 import SecuritySetting from "./MenuList/Integration/SecuritySetting";
 import Module from "./MenuList/settings/Module";
+import Campaignform from './MenuList/marketingCampaign/Campaignform'
 
 
 // super admin routes
@@ -40,11 +41,14 @@ import Payments from "./MenuList/Payments/Payments";
 import Refunds from "./MenuList/refunds/Refunds";
 
 // market admin routes
-import Campign from "./MenuList/marketingCampaign/Campaignform";
+import Campaignform from "./MenuList/marketingCampaign/Campaignform";
+
 import SocialMedia from "./MenuList/marketingCampaign/SocialMedia"
 import Email from "./MenuList/marketingCampaign/Email";
 import Sms from "./MenuList/marketingCampaign/Sms"
 import Analytics from "./MenuList/marketingCampaign/Analytics"
+import { Campaign } from "@mui/icons-material";
+import SMSMarketingDashboard from "./MenuList/marketingCampaign/Sms"
 
 
 
@@ -102,12 +106,12 @@ const AppRoutes = () => {
           <Route path="reports" element={<Report />} />
         </Route>
 
-        <Route path="/MarketAdmin" element={<Layout />}>
+        <Route path="/marketAdmin" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="campign" element={<Campign />} />
+          <Route path="campaign" element={<Campaignform />} />
           <Route path="socialMedia" element={<SocialMedia />} />
           <Route path="email" element={<Email />} />
-          <Route path="sms" element={<Sms />} />
+          <Route path="sms" element={<SMSMarketingDashboard  />} />
           <Route path="analytics" element={<Analytics />} />
         </Route>
 
