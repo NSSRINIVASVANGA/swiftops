@@ -6,7 +6,7 @@ import MarkentingDashboard from "./MarkentingDashboard";
 import SuperAdminDashboard from "./SuperAdminDashboard";
 
 const Dashboard = () => {
-  return <AdminDashboard />;
+  return <AdminDashboard/>;
 };
 
 export default Dashboard;
